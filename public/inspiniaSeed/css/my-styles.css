@@ -28,14 +28,14 @@
 .icon {
     width: 28px;
     height: 28px;
-    background: url(/public/images/app-phone-icon.png);
+    background: url(/images/app-phone-icon.png);
     background-size: 28px 28px;
 }
 
 .editicon {
     width: 28px;
     height: 28px;
-    background:url("/public/images/Actions-document-edit-icon.png");
+    background:url("/images/Actions-document-edit-icon.png");
     display:block;
     margin: 0 auto;
     background-size: 28px 28px;

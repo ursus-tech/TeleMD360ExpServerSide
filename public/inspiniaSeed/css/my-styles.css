@@ -1,0 +1,54 @@
+.myGrid {
+    width: 100%;
+    height: 250px;
+}
+
+.myTabGrid {
+    width: 100%;
+    height: 250px;
+}
+
+
+.tabHeader {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #ffffff;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0px 0;
+    color: inherit;
+    margin-bottom: 0;
+    padding: 14px 15px 7px;
+    min-height: 48px;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    background: url(/public/images/app-phone-icon.png);
+    background-size: 28px 28px;
+}
+
+.editicon {
+    width: 28px;
+    height: 28px;
+    background:url("/public/images/Actions-document-edit-icon.png");
+    display:block;
+    margin: 0 auto;
+    background-size: 28px 28px;
+}
+
+.rex { color: black; font-weight:bold; background-color: red !important; }
+.red { color: black; font-weight:bold; background-color: lightgray !important; }
+.blue { color: blue !important; }
+.selected { color: blue; background-color: orange !important; }
+.otable { width:100%; background-size:100%; border-color: blue; background-color: lightblue !important;}
+.sidebar { width:15%; background-color: lightblue !important;}
+.topbar {   column-span: 2; border-color: blue; background-color: lightblue !important;}
+.bottombar {text-align:center; column-span: 2; border-color: blue; background-color: white !important;}
+.backg { border-color: blue; background-color: white !important;}
+.login { align-content:center; border-color: blue; background-color: lightblue !important;}
+.textbold {font-weight:bold; text-align: center}

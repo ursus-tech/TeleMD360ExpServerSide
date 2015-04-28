@@ -24,6 +24,106 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
 
 
+    this.states = [
+        'Arabic',
+        'Bengali',
+        'Chinese',
+        'English',
+        'French',
+        'German',
+        'Greek',
+        'Hindu',
+        'Italian',
+        'Japanese',
+        'Latin',
+        'Portuguese',
+        'Russian',
+        'Spanish'
+
+    ];
+
+    this.bodyTypes = [
+        'Large',
+        'Medium',
+        'Small'
+    ];
+
+    this.genderTypes = [
+            'Male',
+            'Female',
+            'Other',
+            'Unavailable'
+    ];
+
+    this.primaryConditions = [
+        'Asthmatic',
+        'CAD',
+        'Congestive Heart Failure',
+        'COPD',
+        'Diabetes',
+        'Diabetes Type 1',
+        'Diabetes Type 2',
+        'Eval',
+        'Gestatioanal Diabetes',
+        'Heart Failure',
+        'Hypertension',
+        'Major Depressive Disorder',
+        'None',
+        'Other',
+        'Pre Diabetes',
+        'Respiratory Failure',
+        'Trach',
+        'Unspecified'
+    ];
+
+    this.secondaryConditions = [
+        'Asthmatic',
+        'CAD',
+        'Congestive Heart Failure',
+        'COPD',
+        'Diabetes',
+        'Diabetes Type 1',
+        'Diabetes Type 2',
+        'Eval',
+        'Gestatioanal Diabetes',
+        'Heart Failure',
+        'Hypertension',
+        'Major Depressive Disorder',
+        'None',
+        'Other',
+        'Pre Diabetes',
+        'Respiratory Failure',
+        'Trach',
+        'Unspecified'
+    ];
+
+    this.timezones = [
+        'Alaska Standard Time',
+        'Central Standard Time',
+        'Eastern Standard Time',
+        'Hawaii Standard Time',
+        'Mountain Standard Time',
+        'Pacific Standard Time'
+    ];
+
+    this.phoneTypes = [
+        'Business',
+        'Emergency',
+        'Fax',
+        'Home',
+        'IVR',
+        'Mobile',
+        'Triage',
+        'Warranty'
+    ];
+
+    this.emailaddressTypes = [
+        'Business',
+        'Mobile Phone',
+        'Personal',
+        'Warranty'
+    ];
+
 };
 
 

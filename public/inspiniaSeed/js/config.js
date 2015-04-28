@@ -40,7 +40,23 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         .state('index.clients', {
             url: "/clients",
             templateUrl: "views/clients.html",
-            data: { pageTitle: 'Client List' }
+            data: { pageTitle: 'Client List' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'localytics.directives',
+                            files: ['css/plugins/chosen/chosen.css','js/plugins/chosen/chosen.jquery.js','js/plugins/chosen/chosen.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css','js/plugins/datapicker/datePicker.js']
+                        }
+
+                    ]);
+                }
+            }
         })
 }
 angular

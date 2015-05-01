@@ -22,7 +22,9 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
     clientDetailsGridSubGrid($scope, $log,  $interval, uiGridConstants);
 
-
+    $scope.clientForm = {};
+    $scope.clientForm.fname = "Jakob";
+    $scope.clientForm.lname  = "Jenkov";
 
     this.states = [
         'Arabic',
@@ -124,7 +126,17 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         'Warranty'
     ];
 
+
+
+    $scope.SaveNewClient = function() {
+        var fname = $scope.client.fname;
+
+        //alert('hello' + fname);
+    }
 };
+
+
+
 
 
 function myFactoryFunction($scope, $http) {

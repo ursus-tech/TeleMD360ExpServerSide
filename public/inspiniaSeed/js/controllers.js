@@ -129,7 +129,7 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
 
     $scope.SaveNewClient = function() {
-        var fname = $scope.client.fname;
+        var fname = $scope.clientForm.fname;
 
         //alert('hello' + fname);
     }

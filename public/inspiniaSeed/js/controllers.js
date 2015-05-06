@@ -186,7 +186,7 @@ function copyClientData($scope, record, $log){
     $scope.clientForm.dob = record.dob || notProvided;;
     $scope.clientForm.ssn = record.ssn || notProvided;;
     $scope.clientForm.employer = record.employer || notProvided;
-    $scope.clientForm.clientid = record.clientIdentifier || notProvided;;
+    $scope.clientForm.clientid = record.clientIdentifier || notProvided;
 
     $scope.clientForm.genderType = record.gender;
     $log.debug($scope.clientForm.genderType);

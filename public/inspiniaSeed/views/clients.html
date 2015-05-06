@@ -57,7 +57,7 @@
 
 <!- ################################################################## -->
 <div>
-    {{client.fname}} {{client.lname}}
+    {{clientForm.client.fname}} {{client.lname}} {{testfield}}
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -70,26 +70,34 @@
 
             <div class="ibox-content ">
                 <div id="middlePanel" class="wrapper wrapper-content animated fadeInRightBig">
-                    <form name="clientForm" method="get" class="form-horizontal">
+                    <form class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">First Name</label>
                             <div class="col-md-2">
+                                <input type="text" name="fname" ng-minlength=2 ng-maxlength=20
+                                                         ng-model="clientForm.fname" class="form-control">
+
+                            </div>
+
+
+                            <!-- <div class="col-md-2">
                                 <input type="text" placeholder=".col-md-4" name="fname" ng-minlength=2 ng-maxlength=20
-                                                         ng-model="client.fname" required class="form-control">
+                                       ng-model="client.fname" required class="form-control">
                                 <div role="alert">
                                     <span class="error" ng-show="clientForm.fname.$error.required">Required!</span>
                                     <span class="error" ng-show="clientForm.fname.$error.minlength">Too short!</span>
                                     <span class="error" ng-show="clientForm.fname.$error.maxlength">Too long!</span>
                                 </div>
                             </div>
+                            -->
 
                             <label class="col-sm-2 control-label">Middle Name</label>
                             <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="mname"
-                                                         ng-model="client.mname" class="form-control"></div>
+                                                         ng-model="clientForm.mname" class="form-control"></div>
 
                             <label class="col-sm-2 control-label">Last Name</label>
                             <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="lname"
-                                                         ng-model="client.lname" required class="form-control">
+                                                         ng-model="clientForm.lname" required class="form-control">
                             </div>
                         </div>
 
@@ -97,17 +105,17 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Height (lb)</label>
 
-                            <div class="col-md-2"><input type="number" ng-model="client.height" required
+                            <div class="col-md-2"><input type="number" ng-model="clientForm.height" required
                                                          class="form-control"></div>
 
                             <label class="col-sm-2 control-label">Weight (lb)</label>
 
-                            <div class="col-md-2"><input type="number" ng-model="client.weight" required
+                            <div class="col-md-2"><input type="number" ng-model="clientForm.weight" required
                                                          class="form-control"></div>
 
                             <label class="col-sm-2 control-label">DOB</label>
                             <div class="input-group date">
-                                <input type="datetime" class="form-control" date-time ng-model="client.sampleDate" required view="date">
+                                <input type="datetime" class="form-control" date-time ng-model="clientForm.dob" required view="date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                         </div>
@@ -127,17 +135,17 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">SSN</label>
 
-                            <div class="col-md-2"><input type="text" ng-model="client.ssn" required
+                            <div class="col-md-2"><input type="text" ng-model="clientForm.ssn" required
                                                          class="form-control"></div>
 
                             <label class="col-sm-2 control-label">Employer</label>
 
-                            <div class="col-md-2"><input type="text" ng-model="client.employer" required
+                            <div class="col-md-2"><input type="text" ng-model="clientForm.employer" required
                                                          class="form-control"></div>
 
-                            <label class="col-sm-2 control-label">Client ID</label>
+                            <label class="col-sm-2 control-label">ClientID</label>
 
-                            <div class="col-md-2"><input type="text" ng-model="client.clientid" required
+                            <div class="col-md-2"><input type="text" ng-model="clientForm.clientid" required
                                                          class="form-control"></div>
                         </div>
                         <div role="alert">
@@ -176,11 +184,28 @@
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Gender</label>
+                            <!-- <select data-ng-options="o.name for o in options" data-ng-model="selectedOption"></select> -->
+                            <!-- <select data-ng-options="o.value for o in genderTypes" data-ng-model="selectedOption2"></select> -->
+                            <!-- <select  data-ng-options="o.value for o in genderTypes3" data-ng-model="selectedOption3"></select> -->
+                            <select  style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4"></select>
 
                             <div class="input-group">
-                                <select chosen id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
-                                        ng-model="genderType" ng-options="s for s in main.genderTypes">
+                                <select chosen  id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
+                                        data-ng-model="selectedOption2" data-ng-options="s.value for s in genderTypes">
                                 </select>
+
+                                <select chosen class="chosen-select" style="width:350px;" tabindex="7"
+                                        data-ng-model="selectedOption3" data-ng-options="s.value for s in genderTypes3">
+                                </select>
+
+                                <select chosen class="chosen-select"  style="width:350px;" tabindex="7"
+                                        data-ng-model="selectedOption4" data-ng-options="s for s in genderTypes4">
+                                    <option value=""></option>
+                                </select>
+
+                                <!--<select chosen id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
+                                        ng-model="clientForm.genderType" ng-options="s.value for s in main.genderTypes">
+                                </select>  -->
                             </div>
                         </div>
 

@@ -13,18 +13,26 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
     this.helloText = 'Welcome in SeedProject';
     this.descriptionText = 'It is an application skeleton for a typical AngularJS web app. You can use it to quickly bootstrap your angular webapp projects and dev environment for these projects.';
 
+    $scope.options = [{ name: "a", id: 1 }, { name: "b", id: 2 }];
+    $scope.selectedOption = $scope.options[1];
+    $log.debug($scope.selectedOption);
+
+
     //gridSubGRid($scope);  //creates the grid with subgrid - in patient details
+    $scope.clientForm = {};
+    $scope.clientForm.fname = "Jakob";
+    $scope.clientForm.lname  = "Jenkov";
+    $log.debug("DEBUG IS WORKING");
 
     $scope.testname = "MAHIMA"
-    myFactoryFunction($scope, $http);
+    $scope.testfield = "MAHIMA"
+    myFactoryFunction($scope, $http, $log);
 
     clientsUiGrid($scope, $log, $interval, uiGridConstants);
 
     clientDetailsGridSubGrid($scope, $log,  $interval, uiGridConstants);
 
-    $scope.clientForm = {};
-    $scope.clientForm.fname = "Jakob";
-    $scope.clientForm.lname  = "Jenkov";
+
 
     this.states = [
         'Arabic',
@@ -50,11 +58,28 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         'Small'
     ];
 
-    this.genderTypes = [
-            'Male',
-            'Female',
-            'Other',
-            'Unavailable'
+    $scope.genderTypes = [
+        { id:1, value:'Male'},
+        { id:2, value:'Female'},
+        { id:3, value:'Other'},
+        { id:4, value:'Unavailable'}
+
+    ];
+
+    $scope.genderTypes3 = [
+        {value:'Male'},
+        {value:'Female'},
+        {value:'Other'},
+        {value:'Unavailable'}
+
+    ];
+
+    $scope.genderTypes4 = [
+        'Male',
+        'Female',
+        'Other',
+        'Unavailable'
+
     ];
 
     this.primaryConditions = [
@@ -135,16 +160,100 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
     }
 };
 
+function findIndex($scope, $log, typesList, selectedOption){
+    $log.debug("&&&&&&&>");
+    var ind = -1;
+    for	(index = 0; index < typesList.length; index++) {
+        if ( typesList[index].value == selectedOption.value ) {
+            ind = index;
+            $log.debug("----->" + ind);
+            break;
+        }
+    }
+
+    return ind;
+}
+
+
+function copyClientData($scope, record, $log){
+    const notProvided = "NOT PROVIDED by server";
+
+    $scope.clientForm.fname = record.firstName || notProvided;;
+    $scope.clientForm.mname = record.middleName || notProvided;;
+    $scope.clientForm.lname = record.lastName || notProvided;;
+    $scope.clientForm.height = record.height || notProvided;;
+    $scope.clientForm.weight = record.weight || notProvided;;
+    $scope.clientForm.dob = record.dob || notProvided;;
+    $scope.clientForm.ssn = record.ssn || notProvided;;
+    $scope.clientForm.employer = record.employer || notProvided;
+    $scope.clientForm.clientid = record.clientIdentifier || notProvided;;
+
+    $scope.clientForm.genderType = record.gender;
+    $log.debug($scope.clientForm.genderType);
+
+    $scope.selectedOption2 = $scope.genderTypes[1];
+    $log.debug($scope.selectedOption2);
+
+
+    $scope.selectedOption3 = {value:'Other'};
+    //var ind = findIndex($scope, $log, $scope.genderTypes3, $scope.selectedOption3);
+    //var selectedEntry = $scope.genderTypes3[ind];
+    //$scope.selectedOption3 = selectedEntry;
+    //$scope.selectedOption3 = $scope.genderTypes3[2];
+
+    $log.debug($scope.selectedOption3);
+    $log.debug($scope.genderTypes3[2]);
+    $log.debug($scope.genderTypes3);
+
+
+    $log.debug('######################');
+    $log.debug($scope.genderTypes4);
+    $log.debug($scope.genderTypes4[2]);
+    $scope.selectedOption4 = $scope.genderTypes4[2];
+    $log.debug($scope.selectedOption4);
+
+   /* if ($scope.selectedOption4 == $scope.genderTypes4[2]){
+        $log.debug("MATCH");
+    }
+    else {
+        $log.debug("ERROR");
+    }
+
+    var ind = -1;
+    for	(index = 0; index < $scope.genderTypes4.length; index++) {
+        if ( $scope.genderTypes4[index] == $scope.selectedOption4 ) {
+            ind = index;
+            $log.debug(ind);
+            break;
+        }
+    }
+
+    $scope.selectedOption4 = $scope.genderTypes4[ind]; */
 
 
 
+    $scope.clientForm.employer = notProvided;
+    $scope.clientForm.employer = notProvided;
+    $scope.clientForm.employer = notProvided;
 
-function myFactoryFunction($scope, $http) {
-    $http.get('http://localhost:4000/singleUser').
+}
+
+
+function myFactoryFunction($scope, $http, $log) {
+    //$http.get('http://localhost:4000/singleUser').
+    $http.get('http://localhost:4000/clients').
         success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
             $scope.testname = data; //try data.name for key/value
+            $log.debug(data);
+            //$log.debug(data[0].firstName);
+            //$log.debug(data[1].firstName);
+            //$log.debug(data[2]);
+
+            copyClientData($scope, data[0], $log);
+            //var jsonData = JSON.parse(data);
+
         }).
         error(function(data, status, headers, config) {
             // called asynchronously if an error occurs

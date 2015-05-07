@@ -71,7 +71,6 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         {value:'Female'},
         {value:'Other'},
         {value:'Unavailable'}
-
     ];
 
     $scope.genderTypes4 = [
@@ -155,8 +154,9 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
     $scope.SaveNewClient = function() {
         var fname = $scope.clientForm.fname;
+        var gender = $scope.clientForm.selectedGender;
 
-        //alert('hello' + fname);
+        alert('hello ' + fname + ' ' + gender.value);
     }
 };
 
@@ -164,7 +164,8 @@ function findIndex($scope, $log, typesList, selectedOption){
     $log.debug("&&&&&&&>");
     var ind = -1;
     for	(index = 0; index < typesList.length; index++) {
-        if ( typesList[index].value == selectedOption.value ) {
+        $log.debug(typesList[index].value.toUpperCase() + "==" + selectedOption.toUpperCase());
+        if ( typesList[index].value.toUpperCase() == selectedOption.toUpperCase() ) {
             ind = index;
             $log.debug("----->" + ind);
             break;
@@ -178,39 +179,56 @@ function findIndex($scope, $log, typesList, selectedOption){
 function copyClientData($scope, record, $log){
     const notProvided = "NOT PROVIDED by server";
 
-    $scope.clientForm.fname = record.firstName || notProvided;;
-    $scope.clientForm.mname = record.middleName || notProvided;;
-    $scope.clientForm.lname = record.lastName || notProvided;;
-    $scope.clientForm.height = record.height || notProvided;;
-    $scope.clientForm.weight = record.weight || notProvided;;
-    $scope.clientForm.dob = record.dob || notProvided;;
-    $scope.clientForm.ssn = record.ssn || notProvided;;
+    $scope.clientForm.fname = record.firstName || notProvided;
+    $scope.clientForm.mname = record.middleName || notProvided;
+    $scope.clientForm.lname = record.lastName || notProvided;
+    $scope.clientForm.height = record.height || notProvided;
+    $scope.clientForm.weight = record.weight || notProvided;
+    $scope.clientForm.dob = record.dob || notProvided;
+    $scope.clientForm.ssn = record.ssn || notProvided;
     $scope.clientForm.employer = record.employer || notProvided;
     $scope.clientForm.clientid = record.clientIdentifier || notProvided;
 
     $scope.clientForm.genderType = record.gender;
-    $log.debug($scope.clientForm.genderType);
 
-    $scope.selectedOption2 = $scope.genderTypes[1];
-    $log.debug($scope.selectedOption2);
+    $log.debug("selectedGender = " + $scope.clientForm.genderType.toString());
+    $log.debug("GenderList = ");
+    $log.debug($scope.genderTypes);
+
+    var selectedGenderInd = findIndex($scope, $log, $scope.genderTypes, $scope.clientForm.genderType);
+    $scope.clientForm.selectedGender =  $scope.genderTypes[selectedGenderInd];
+
+    //$scope.selectedOption2 = $scope.genderTypes[1];
+    //$log.debug($scope.selectedOption2);
 
 
-    $scope.selectedOption3 = {value:'Other'};
+    //$scope.selectedOption3 = $scope.genderTypes3[2];
     //var ind = findIndex($scope, $log, $scope.genderTypes3, $scope.selectedOption3);
     //var selectedEntry = $scope.genderTypes3[ind];
     //$scope.selectedOption3 = selectedEntry;
     //$scope.selectedOption3 = $scope.genderTypes3[2];
 
-    $log.debug($scope.selectedOption3);
-    $log.debug($scope.genderTypes3[2]);
-    $log.debug($scope.genderTypes3);
+    //$log.debug($scope.selectedOption3);
+    //$log.debug($scope.genderTypes3[2]);
+    //$log.debug($scope.genderTypes3);
 
 
     $log.debug('######################');
-    $log.debug($scope.genderTypes4);
-    $log.debug($scope.genderTypes4[2]);
-    $scope.selectedOption4 = $scope.genderTypes4[2];
+    $scope.selectedOption4 = 'Other';
     $log.debug($scope.selectedOption4);
+    $log.debug($scope.genderTypes4);
+
+    var x = new Object();
+    x = {value:'Other'};
+    $log.debug('######################');
+    $scope.selectedOption3 = {value:'Other'};
+    $log.debug($scope.selectedOption3);
+    $log.debug($scope.genderTypes3);
+
+
+    //$log.debug($scope.genderTypes4[2]);
+    //$scope.selectedOption4 = $scope.genderTypes4[2];
+    //$log.debug($scope.selectedOption4);
 
    /* if ($scope.selectedOption4 == $scope.genderTypes4[2]){
         $log.debug("MATCH");

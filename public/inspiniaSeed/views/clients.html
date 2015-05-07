@@ -56,6 +56,14 @@
 
 
 <!- ################################################################## -->
+<select style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4">1</select>
+<select style="width:350px;height:36px" tabindex="6" ng-options="o.value for o in genderTypes3" data-ng-model="selectedOption3">2</select>
+
+<select chosen id="mySelect" class="chosen-select" style="width:350px;" tabindex="11"
+        data-ng-model="selectedOption4" data-ng-options="s for s in genderTypes4">
+</select>
+
+
 <div>
     {{clientForm.client.fname}} {{client.lname}} {{testfield}}
 </div>
@@ -187,21 +195,19 @@
                             <!-- <select data-ng-options="o.name for o in options" data-ng-model="selectedOption"></select> -->
                             <!-- <select data-ng-options="o.value for o in genderTypes" data-ng-model="selectedOption2"></select> -->
                             <!-- <select  data-ng-options="o.value for o in genderTypes3" data-ng-model="selectedOption3"></select> -->
-                            <select  style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4"></select>
+                            <!-- <select  style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4"></select> -->
 
                             <div class="input-group">
-                                <select chosen  id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
-                                        data-ng-model="selectedOption2" data-ng-options="s.value for s in genderTypes">
+                                <select chosen id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
+                                        data-ng-model="clientForm.selectedGender" data-ng-options="s.value for s in genderTypes">
                                 </select>
 
-                                <select chosen class="chosen-select" style="width:350px;" tabindex="7"
-                                        data-ng-model="selectedOption3" data-ng-options="s.value for s in genderTypes3">
-                                </select>
 
-                                <select chosen class="chosen-select"  style="width:350px;" tabindex="7"
+
+                                <!-- <select chosen class="chosen-select"  style="width:350px;" tabindex="7"
                                         data-ng-model="selectedOption4" data-ng-options="s for s in genderTypes4">
                                     <option value=""></option>
-                                </select>
+                                </select> -->
 
                                 <!--<select chosen id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
                                         ng-model="clientForm.genderType" ng-options="s.value for s in main.genderTypes">

@@ -34,21 +34,21 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
 
 
-    this.states = [
-        'Arabic',
-        'Bengali',
-        'Chinese',
-        'English',
-        'French',
-        'German',
-        'Greek',
-        'Hindu',
-        'Italian',
-        'Japanese',
-        'Latin',
-        'Portuguese',
-        'Russian',
-        'Spanish'
+    $scope.languageTypes = [
+        { id:1,  value:'Arabic'},
+        { id:2,  value:'Bengali'},
+        { id:3,  value:'Chinese'},
+        { id:4,  value:'English'},
+        { id:5,  value:'French'},
+        { id:6,  value:'German'},
+        { id:7,  value:'Greek'},
+        { id:8,  value:'Hindu'},
+        { id:9,  value:'Italian'},
+        { id:10,  value:'Japanese'},
+        { id:11,  value:'Latin'},
+        { id:12,  value:'Portuguese'},
+        { id:13,  value:'Russian'},
+        { id:14,  value:'Spanish'}
 
     ];
 
@@ -81,55 +81,57 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
     ];
 
-    this.primaryConditions = [
-        'Asthmatic',
-        'CAD',
-        'Congestive Heart Failure',
-        'COPD',
-        'Diabetes',
-        'Diabetes Type 1',
-        'Diabetes Type 2',
-        'Eval',
-        'Gestatioanal Diabetes',
-        'Heart Failure',
-        'Hypertension',
-        'Major Depressive Disorder',
-        'None',
-        'Other',
-        'Pre Diabetes',
-        'Respiratory Failure',
-        'Trach',
-        'Unspecified'
+    $scope.morbidConditionTypes = [
+        { id:1, value:'Asthmatic'},
+        { id:2, value:'CAD'},
+        { id:3, value:'Congestive Heart Failure'},
+        { id:4, value:'COPD'},
+        { id:5, value:'Diabetes'},
+        { id:6, value:'Diabetes Type 1'},
+        { id:7, value:'Diabetes Type 2'},
+        { id:8, value:'Eval'},
+        { id:9, value:'Gestatioanal Diabetes'},
+        { id:10, value:'Heart Failure'},
+        { id:11, value:'Hypertension'},
+        { id:12, value:'Major Depressive Disorder'},
+        { id:13, value:'None'},
+        { id:14, value:'Other'},
+        { id:15, value:'Pre Diabetes'},
+        { id:16, value:'Respiratory Failure'},
+        { id:17, value:'Trach'},
+        { id:18, value:'Unspecified'}
     ];
 
-    this.secondaryConditions = [
-        'Asthmatic',
-        'CAD',
-        'Congestive Heart Failure',
-        'COPD',
-        'Diabetes',
-        'Diabetes Type 1',
-        'Diabetes Type 2',
-        'Eval',
-        'Gestatioanal Diabetes',
-        'Heart Failure',
-        'Hypertension',
-        'Major Depressive Disorder',
-        'None',
-        'Other',
-        'Pre Diabetes',
-        'Respiratory Failure',
-        'Trach',
-        'Unspecified'
+    $scope.coMorbidConditionTypes = [
+        { id:1, value:'Asthmatic'},
+        { id:2, value:'CAD'},
+        { id:3, value:'Congestive Heart Failure'},
+        { id:4, value:'COPD'},
+        { id:5, value:'Diabetes'},
+        { id:6, value:'Diabetes Type 1'},
+        { id:7, value:'Diabetes Type 2'},
+        { id:8, value:'Eval'},
+        { id:9, value:'Gestatioanal Diabetes'},
+        { id:10, value:'Heart Failure'},
+        { id:11, value:'Hypertension'},
+        { id:12, value:'Major Depressive Disorder'},
+        { id:13, value:'None'},
+        { id:14, value:'Other'},
+        { id:15, value:'Pre Diabetes'},
+        { id:16, value:'Respiratory Failure'},
+        { id:17, value:'Trach'},
+        { id:18, value:'Unspecified'}
     ];
 
-    this.timezones = [
-        'Alaska Standard Time',
-        'Central Standard Time',
-        'Eastern Standard Time',
-        'Hawaii Standard Time',
-        'Mountain Standard Time',
-        'Pacific Standard Time'
+
+
+    $scope.timezoneTypes = [
+        { id:1, value:'Alaska Standard Time'},
+        { id:2, value:'Central Standard Time'},
+        { id:3, value:'Eastern Standard Time'},
+        { id:4, value:'Hawaii Standard Time'},
+        { id:5, value:'Mountain Standard Time'},
+        { id:6, value:'Pacific Standard Time'}
     ];
 
     this.phoneTypes = [
@@ -143,11 +145,11 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         'Warranty'
     ];
 
-    this.emailaddressTypes = [
-        'Business',
-        'Mobile Phone',
-        'Personal',
-        'Warranty'
+    $scope.emailaddressTypes = [
+        { id:1, value:'Business'},
+        { id:2, value:'Mobile Phone'},
+        { id:3, value:'Personal'},
+        { id:4, value:'Warranty'}
     ];
 
 
@@ -155,10 +157,41 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
     $scope.SaveNewClient = function() {
         var fname = $scope.clientForm.fname;
         var gender = $scope.clientForm.selectedGender;
+        var language = $scope.clientForm.selectedLanguage;
 
-        alert('hello ' + fname + ' ' + gender.value);
+
+        var morbidConditions = $scope.clientForm.selectedMorbidCondition;
+
+        var coMorbidConditions = "[";
+        for (var i = 0; i < $scope.clientForm.selectedCoMorbidCondition.length; i++) {
+            coMorbidConditions += $scope.clientForm.selectedCoMorbidCondition[i].value + ", ";
+        }
+        coMorbidConditions += "]";
+
+
+        var results = fname + " " +  gender.value + " " + language.value + " " + morbidConditions.value + " " + coMorbidConditions;
+
+        alert('results = ' + results);
     }
+
+
+
+    $scope.emailAccounts = [
+
+    ];
+
+    $scope.addEmailAccounts = function () {
+        $scope.emailAccounts.push(
+            {   address: $scope.clientForm.emailaddress,
+                type: $scope.clientForm.selectedEmailAddressType.value
+            });
+    };
+
 };
+
+
+
+
 
 function findIndex($scope, $log, typesList, selectedOption){
     $log.debug("&&&&&&&>");
@@ -186,17 +219,50 @@ function copyClientData($scope, record, $log){
     $scope.clientForm.weight = record.weight || notProvided;
     $scope.clientForm.dob = record.dob || notProvided;
     $scope.clientForm.ssn = record.ssn || notProvided;
-    $scope.clientForm.employer = record.employer || notProvided;
     $scope.clientForm.clientid = record.clientIdentifier || notProvided;
-
+    $scope.clientForm.languageType = record.language;
     $scope.clientForm.genderType = record.gender;
+    $scope.clientForm.morbidConditionType = record.coMorbidConditions[0];
+    $scope.clientForm.coMorbidConditionType = record.coMorbidConditions[1];
+    $scope.clientForm.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
+    $scope.clientForm.emailaddressType = record.email || 'Personal';
+
+    $log.debug("selectedLanguage = " + $scope.clientForm.languageType.toString());
+    $log.debug("LanguageList = ");
+    $log.debug($scope.languageTypes);
+    var selectedLanguageInd = findIndex($scope, $log, $scope.languageTypes, $scope.clientForm.languageType);
+    $scope.clientForm.selectedLanguage =  $scope.languageTypes[selectedLanguageInd];
 
     $log.debug("selectedGender = " + $scope.clientForm.genderType.toString());
     $log.debug("GenderList = ");
     $log.debug($scope.genderTypes);
-
     var selectedGenderInd = findIndex($scope, $log, $scope.genderTypes, $scope.clientForm.genderType);
     $scope.clientForm.selectedGender =  $scope.genderTypes[selectedGenderInd];
+
+    $log.debug("selectedMorbidCondition = " + $scope.clientForm.morbidConditionType.toString());
+    $log.debug("MorbidConditionsList = ");
+    $log.debug($scope.morbidConditionTypes);
+    var selectedMorbidConditionInd = findIndex($scope, $log, $scope.morbidConditionTypes, $scope.clientForm.morbidConditionType);
+    $scope.clientForm.selectedMorbidCondition =  $scope.morbidConditionTypes[selectedMorbidConditionInd];
+
+    $log.debug("selectedCoMorbidCondition = " + $scope.clientForm.coMorbidConditionType.toString());
+    $log.debug("CoMorbidConditionsList = ");
+    $log.debug($scope.coMorbidConditionTypes);
+    var selectedCoMorbidConditionInd = findIndex($scope, $log, $scope.coMorbidConditionTypes, $scope.clientForm.coMorbidConditionType);
+    $scope.clientForm.selectedCoMorbidCondition =  $scope.coMorbidConditionTypes[selectedCoMorbidConditionInd];
+    $log.debug("selectedCoMorbidCondition = " + $scope.clientForm.selectedCoMorbidCondition.value.toString());
+
+    $log.debug("selectedTimezone = " + $scope.clientForm.timezoneType.toString());
+    $log.debug("TimezoneList = ");
+    $log.debug($scope.timezoneTypes);
+    var selectedTimezoneInd = findIndex($scope, $log, $scope.timezoneTypes, $scope.clientForm.timezoneType);
+    $scope.clientForm.selectedTimezone =  $scope.timezoneTypes[selectedTimezoneInd];
+
+    $log.debug("selectedEmailAddressTypes = " + $scope.clientForm.emailaddressType.toString());
+    $log.debug("EmailAddressTypeList = ");
+    $log.debug($scope.emailaddressTypes);
+    var selectedEmailAddressTypeInd = findIndex($scope, $log, $scope.emailaddressTypes, $scope.clientForm.emailaddressType);
+    $scope.clientForm.selectedEmailAddressType =  $scope.emailaddressTypes[selectedEmailAddressTypeInd];
 
     //$scope.selectedOption2 = $scope.genderTypes[1];
     //$log.debug($scope.selectedOption2);
@@ -213,7 +279,7 @@ function copyClientData($scope, record, $log){
     //$log.debug($scope.genderTypes3);
 
 
-    $log.debug('######################');
+    /*$log.debug('######################');
     $scope.selectedOption4 = 'Other';
     $log.debug($scope.selectedOption4);
     $log.debug($scope.genderTypes4);
@@ -223,7 +289,7 @@ function copyClientData($scope, record, $log){
     $log.debug('######################');
     $scope.selectedOption3 = {value:'Other'};
     $log.debug($scope.selectedOption3);
-    $log.debug($scope.genderTypes3);
+    $log.debug($scope.genderTypes3); */
 
 
     //$log.debug($scope.genderTypes4[2]);

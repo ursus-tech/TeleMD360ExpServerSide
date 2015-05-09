@@ -56,12 +56,12 @@
 
 
 <!- ################################################################## -->
-<select style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4">1</select>
+<!-- <select style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4">1</select>
 <select style="width:350px;height:36px" tabindex="6" ng-options="o.value for o in genderTypes3" data-ng-model="selectedOption3">2</select>
 
 <select chosen id="mySelect" class="chosen-select" style="width:350px;" tabindex="11"
         data-ng-model="selectedOption4" data-ng-options="s for s in genderTypes4">
-</select>
+</select> -->
 
 
 <div>
@@ -146,11 +146,6 @@
                             <div class="col-md-2"><input type="text" ng-model="clientForm.ssn" required
                                                          class="form-control"></div>
 
-                            <label class="col-sm-2 control-label">Employer</label>
-
-                            <div class="col-md-2"><input type="text" ng-model="clientForm.employer" required
-                                                         class="form-control"></div>
-
                             <label class="col-sm-2 control-label">ClientID</label>
 
                             <div class="col-md-2"><input type="text" ng-model="clientForm.clientid" required
@@ -172,19 +167,8 @@
                             <label class="col-sm-2 control-label">Language</label>
 
                             <div class="input-group">
-                                <select chosen id="states" class="chosen-select" style="width:350px;" tabindex="4"
-                                        ng-model="state" ng-options="s for s in main.states">
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Body Type</label>
-
-                            <div class="input-group">
-                                <select chosen id="bodyTypes" class="chosen-select" style="width:350px;" tabindex="5"
-                                        ng-model="bodyType" ng-options="s for s in main.bodyTypes">
+                                <select chosen id="languageTypes" class="chosen-select" style="width:350px;" tabindex="4"
+                                        data-ng-model="clientForm.selectedLanguage" data-ng-options="s.value for s in languageTypes">
                                 </select>
                             </div>
                         </div>
@@ -217,23 +201,21 @@
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Primary Condition</label>
+                            <label class="col-sm-2 control-label">Morbid Condition</label>
 
                             <div class="input-group">
-                                <select chosen id="primaryConditions" class="chosen-select" style="width:350px;"
-                                        tabindex="7" ng-model="primaryCondition"
-                                        ng-options="s for s in main.primaryConditions">
+                                <select chosen id="morbidConditionTypes" class="chosen-select" style="width:350px;" tabindex="7"
+                                        data-ng-model="clientForm.selectedMorbidCondition" data-ng-options="s.value for s in morbidConditionTypes">
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Secondary Condition</label>
+                            <label class="col-sm-2 control-label">Co-Morbid Conditions</label>
 
                             <div class="input-group">
-                                <select chosen id="secondaryConditions" class="chosen-select" style="width:350px;"
-                                        tabindex="8" ng-model="secondaryCondition"
-                                        ng-options="s for s in main.secondaryConditions">
+                                <select chosen id="coMorbidConditionTypes" class="chosen-select" style="width:350px;" tabindex="8" multiple
+                                        ng-model="clientForm.selectedCoMorbidCondition" ng-options="s.value for s in coMorbidConditionTypes">
                                 </select>
                             </div>
                         </div>
@@ -244,8 +226,8 @@
                             <label class="col-sm-2 control-label">Time Zone</label>
 
                             <div class="input-group">
-                                <select chosen id="timezones" class="chosen-select" style="width:350px;" tabindex="9"
-                                        ng-model="timezone" ng-options="s for s in main.timezones">
+                                <select chosen id="timezoneTypes" class="chosen-select" style="width:350px;" tabindex="9"
+                                        ng-model="clientForm.selectedTimezone" data-ng-options="s.value for s in timezoneTypes">
                                 </select>
                             </div>
                         </div>
@@ -279,22 +261,58 @@
                             </div>
                         </div>
 
-                        <div class="hr-line-dashed"></div>
+
+
+
                         <label class="col-sm-2 control-label">E-mail Address</label>
 
-                        <div class="col-md-2"><input type="text" placeholder=".col-md-4" class="form-control"></div>
+                        <div class="col-md-2"><input type="email" name="emailaddress"
+                                                     ng-model="clientForm.emailaddress" class="form-control"></div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">E-mail Address Types</label>
 
-                            <div class="input-group">
-                                <select chosen id="emailaddressTypes" class="chosen-select" style="width:350px;"
-                                        tabindex="9" ng-model="emailaddressType"
-                                        ng-options="s for s in main.emailaddressTypes">
-                                </select>
-                            </div>
+                            <select chosen id="emailaddressTypes" class="chosen-select" style="width:350px;"
+                                    tabindex="9"
+                                    data-ng-model="clientForm.selectedEmailAddressType"
+                                    data-ng-options="s.value for s in emailaddressTypes">
+                            </select>
+
+                            <button data-ng-click="addEmailAccounts()">Add Email Accounts</button>
                         </div>
 
+                        <!--<br />
+                        Name :
+                        <br />
+                        <input type="text" data-ng-model="filter.name" />
+
+                        <ul>
+                            <li data-ng-repeat="cust in customers | filter:filter.name | orderBy:'city'"> {{cust.name | uppercase}} - {{cust.city}}</li>
+                        </ul>
+
+                        <br />
+                        Customer Name :
+                        <br />
+                        <input type="text" data-ng-model="clientForm.name" />
+                        <br />
+                        Customer City :
+                        <br />
+                        <input type="text" data-ng-model="clientForm.city" />
+                        <br />
+                        <button data-ng-click="addCustomer()" >Add Customer</button>
+                        <br /> -->
+
+
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-2 addressbox">
+                                <ul>
+                                    <li data-ng-repeat="account in emailAccounts | filter:filter.address | orderBy:'type'">
+                                        {{account.address | uppercase}} - {{account.type}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
                         </br>
                         </br>
                         <div class="form-group">

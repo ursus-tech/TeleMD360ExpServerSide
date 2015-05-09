@@ -41,6 +41,7 @@
     background-size: 28px 28px;
 }
 
+.addressbox { color: darkcyan; border-color:lightblue; background-color: transparent !important; }
 .error {color: red; font-weight:bold; background-color: transparent !important;}
 .rex { color: black; font-weight:bold; background-color: red !important; }
 .red { color: black; font-weight:bold; background-color: lightgray !important; }

@@ -249,18 +249,30 @@
                         <div class="hr-line-dashed"></div>
                         <label class="col-sm-2 control-label">Phone Number</label>
 
-                        <div class="col-md-2"><input type="text" placeholder=".col-md-4" class="form-control"></div>
+                        <div class="col-md-2"><input type="text" name="phonenumber"
+                                                     ng-model="clientForm.phonenumber"  class="form-control"></div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Phone Type</label>
+                            <label class="col-sm-2 control-label">Phone Types</label>
 
-                            <div class="input-group">
-                                <select chosen id="phoneTypes" class="chosen-select" style="width:350px;" tabindex="9"
-                                        ng-model="phoneType" ng-options="s for s in main.phoneTypes">
+
+                                <select chosen id="phoneTypes" class="chosen-select" style="width:350px;"
+                                        tabindex="9"
+                                        data-ng-model="clientForm.selectedPhoneNumberType"
+                                        data-ng-options="s.value for s in phonenumberTypes">
                                 </select>
-                            </div>
+                            <button data-ng-click="addPhoneNumberAccounts()">Add Phone Numbers</button>
                         </div>
 
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-2 addressbox">
+                                <ul>
+                                    <li data-ng-repeat="account in phoneNumberAccounts | filter:filter.phonenumber | orderBy:'type'">
+                                        {{account.phonenumber | uppercase}} - {{account.type}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
 
 

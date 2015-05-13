@@ -134,15 +134,15 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         { id:6, value:'Pacific Standard Time'}
     ];
 
-    this.phoneTypes = [
-        'Business',
-        'Emergency',
-        'Fax',
-        'Home',
-        'IVR',
-        'Mobile',
-        'Triage',
-        'Warranty'
+    $scope.phonenumberTypes = [
+        { id:1, value:'Business'},
+        { id:2, value:'Emergency'},
+        { id:3, value:'Fax'},
+        { id:4, value:'Home'},
+        { id:5, value:'IVR'},
+        { id:6, value:'Mobile'},
+        { id:7, value:'Triage'},
+        { id:8, value:'Warranty'}
     ];
 
     $scope.emailaddressTypes = [
@@ -175,6 +175,18 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
     }
 
 
+    $scope.phoneNumberAccounts = [
+
+    ];
+
+    $scope.addPhoneNumberAccounts = function () {
+        $scope.phoneNumberAccounts.push(
+            {   phonenumber: $scope.clientForm.phonenumber,
+                type: $scope.clientForm.selectedPhoneNumberType.value
+            });
+    };
+
+
 
     $scope.emailAccounts = [
 
@@ -186,6 +198,9 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
                 type: $scope.clientForm.selectedEmailAddressType.value
             });
     };
+
+
+
 
 };
 
@@ -225,6 +240,7 @@ function copyClientData($scope, record, $log){
     $scope.clientForm.morbidConditionType = record.coMorbidConditions[0];
     $scope.clientForm.coMorbidConditionType = record.coMorbidConditions[1];
     $scope.clientForm.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
+    $scope.clientForm.phonenumberType = record.phone || 'Mobile';
     $scope.clientForm.emailaddressType = record.email || 'Personal';
 
     $log.debug("selectedLanguage = " + $scope.clientForm.languageType.toString());
@@ -257,6 +273,14 @@ function copyClientData($scope, record, $log){
     $log.debug($scope.timezoneTypes);
     var selectedTimezoneInd = findIndex($scope, $log, $scope.timezoneTypes, $scope.clientForm.timezoneType);
     $scope.clientForm.selectedTimezone =  $scope.timezoneTypes[selectedTimezoneInd];
+
+    $log.debug("selectedPhoneTypes = " + $scope.clientForm.phonenumberType.toString());
+    $log.debug("PhoneNumberTypeList = ");
+    $log.debug($scope.phonenumberTypes);
+    var selectedPhoneNumberInd = findIndex($scope, $log, $scope.phonenumberTypes, $scope.clientForm.phonenumberType);
+    $scope.clientForm.selectedPhoneNumberType =  $scope.phonenumberTypes[selectedPhoneNumberInd];
+
+
 
     $log.debug("selectedEmailAddressTypes = " + $scope.clientForm.emailaddressType.toString());
     $log.debug("EmailAddressTypeList = ");

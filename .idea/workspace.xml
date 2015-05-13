@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31349f82-4508-4b4c-b51a-0bb525dc4937" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/inspiniaSeed/views/clients.html" afterPath="$PROJECT_DIR$/public/inspiniaSeed/views/clients.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/inspiniaSeed/js/controllers.js" afterPath="$PROJECT_DIR$/public/inspiniaSeed/js/controllers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TeleMD360ExpClientSide.iws" />
@@ -664,7 +662,7 @@
       <workItem from="1430420711536" duration="19579000" />
       <workItem from="1430758611047" duration="677000" />
       <workItem from="1430781313345" duration="58424000" />
-      <workItem from="1431129403349" duration="17452000" />
+      <workItem from="1431129403349" duration="17488000" />
     </task>
     <task id="LOCAL-00001" summary="updated">
       <created>1429842442300</created>
@@ -732,11 +730,17 @@
       <option name="project" value="LOCAL" />
       <updated>1431154876463</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="added Phone number and email address to new client">
+      <created>1431544577540</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1431544577540</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137566000" />
+    <option name="totallyTimeSpent" value="137602000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -776,7 +780,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1705379" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1705379" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -812,7 +816,8 @@
     <MESSAGE value="added 'Add New Client Information' div" />
     <MESSAGE value="new code with pulldown - with issues" />
     <MESSAGE value="modified the new clien dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="modified the new clien dialog" />
+    <MESSAGE value="added Phone number and email address to new client" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Phone number and email address to new client" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

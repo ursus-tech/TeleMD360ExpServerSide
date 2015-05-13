@@ -243,6 +243,23 @@ function copyClientData($scope, record, $log){
     $scope.clientForm.phonenumberType = record.phone || 'Mobile';
     $scope.clientForm.emailaddressType = record.email || 'Personal';
 
+    //populate the phone numbers already stored in the server-side database
+    for	(index = 0; index < record.phoneNumbers.length; index++) {
+        $scope.phoneNumberAccounts.push(
+            {   phonenumber: record.phoneNumbers[i].subscriberNumber,
+                type: record.phoneNumbers[i].type
+            });
+    }
+
+    //populate the email addresses already stored in the server-side database
+    for	(index = 0; index < record.emailAddresses.length; index++) {
+        $scope.emailAccounts.push(
+            {   address: record.emailAddresses[i].email,
+                type: record.emailAddresses[i].type
+            });
+    }
+
+
     $log.debug("selectedLanguage = " + $scope.clientForm.languageType.toString());
     $log.debug("LanguageList = ");
     $log.debug($scope.languageTypes);
@@ -279,8 +296,6 @@ function copyClientData($scope, record, $log){
     $log.debug($scope.phonenumberTypes);
     var selectedPhoneNumberInd = findIndex($scope, $log, $scope.phonenumberTypes, $scope.clientForm.phonenumberType);
     $scope.clientForm.selectedPhoneNumberType =  $scope.phonenumberTypes[selectedPhoneNumberInd];
-
-
 
     $log.debug("selectedEmailAddressTypes = " + $scope.clientForm.emailaddressType.toString());
     $log.debug("EmailAddressTypeList = ");

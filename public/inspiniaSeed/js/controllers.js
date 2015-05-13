@@ -246,16 +246,16 @@ function copyClientData($scope, record, $log){
     //populate the phone numbers already stored in the server-side database
     for	(index = 0; index < record.phoneNumbers.length; index++) {
         $scope.phoneNumberAccounts.push(
-            {   phonenumber: record.phoneNumbers[i].subscriberNumber,
-                type: record.phoneNumbers[i].type
+            {   phonenumber: record.phoneNumbers[index].subscriberNumber,
+                type: record.phoneNumbers[index].type
             });
     }
 
     //populate the email addresses already stored in the server-side database
     for	(index = 0; index < record.emailAddresses.length; index++) {
         $scope.emailAccounts.push(
-            {   address: record.emailAddresses[i].email,
-                type: record.emailAddresses[i].type
+            {   address: record.emailAddresses[index].email,
+                type: record.emailAddresses[index].type
             });
     }
 

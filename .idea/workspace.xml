@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31349f82-4508-4b4c-b51a-0bb525dc4937" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/inspiniaSeed/views/clients.html" afterPath="$PROJECT_DIR$/public/inspiniaSeed/views/clients.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/inspiniaSeed/js/controllers.js" afterPath="$PROJECT_DIR$/public/inspiniaSeed/js/controllers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TeleMD360ExpClientSide.iws" />
@@ -686,7 +684,7 @@
       <workItem from="1430420711536" duration="19579000" />
       <workItem from="1430758611047" duration="677000" />
       <workItem from="1430781313345" duration="58424000" />
-      <workItem from="1431129403349" duration="35026000" />
+      <workItem from="1431129403349" duration="35036000" />
     </task>
     <task id="LOCAL-00001" summary="updated">
       <created>1429842442300</created>
@@ -784,11 +782,17 @@
       <option name="project" value="LOCAL" />
       <updated>1431549976193</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="added Phone number and email address to new client">
+      <created>1431737916448</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1431737916448</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="155140000" />
+    <option name="totallyTimeSpent" value="155150000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">

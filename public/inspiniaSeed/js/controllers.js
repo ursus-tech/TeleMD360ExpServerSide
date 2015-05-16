@@ -20,15 +20,15 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
     //gridSubGRid($scope);  //creates the grid with subgrid - in patient details
     $scope.clientForm = {};
-    $scope.clientForm.fname = "Jakob";
-    $scope.clientForm.lname  = "Jenkov";
+    //$scope.clientForm.fname = "Jakob";
+    //$scope.clientForm.lname  = "Jenkov";
     $log.debug("DEBUG IS WORKING");
 
     $scope.testname = "MAHIMA"
     $scope.testfield = "MAHIMA"
-    myFactoryFunction($scope, $http, $log);
+    //myFactoryFunction($scope, $http, $log);
 
-    clientsUiGrid($scope, $log, $interval, uiGridConstants);
+    clientsUiGrid($scope, $log, $interval, uiGridConstants, $http);
 
     clientDetailsGridSubGrid($scope, $log,  $interval, uiGridConstants);
 
@@ -240,6 +240,10 @@ function copyClientData($scope, record, $log){
     $scope.clientForm.morbidConditionType = record.coMorbidConditions[0];
     $scope.clientForm.coMorbidConditionType = record.coMorbidConditions[1];
     $scope.clientForm.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
+    $scope.clientForm.ivrPin =  record.IVRPin;
+    $scope.clientForm.timerTimeout = record.timerTimeout;
+    $scope.clientForm.noReadingThreshold  = record.noReadingThreshold;
+
     $scope.clientForm.phonenumberType = record.phone || 'Mobile';
     $scope.clientForm.emailaddressType = record.email || 'Personal';
 
@@ -782,14 +786,15 @@ function clientDetailsGridSubGrid($scope, $log,  $interval, uiGridConstants) {
 }
 
 
-function clientsUiGrid($scope, $log, $interval, uiGridConstants) {
+function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http) {
     $scope.clientsDataHeaders = [
         {
-            "metric": "Client",
+            "metric": "First Name",
+            "data00": "Last Name",
             "data01": "Client ID",
             "data02": "HealthPAL SN",
-            "data03": "Condition 1",
-            "data04": "Condition 2",
+            "data03": "Morbid Condition",
+            "data04": "Co-Morbid Conditions",
             "data05": "IVR Threshold",
             "data06": "Language",
             "data07": "Gender",
@@ -866,21 +871,27 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants) {
     };
 
     $scope.clientGridOptions.columnDefs = [
-        {field: "metric", displayName: $scope.clientsDataHeaders[0].metric, cellClass:highlightCell, cellTooltip:true, enableColumnMoving:false},
-        {field: "data01", displayName: $scope.clientsDataHeaders[0].data01, cellClass:highlightCell},
+        {field: "firstName", displayName: $scope.clientsDataHeaders[0].metric, cellClass:highlightCell, cellTooltip:true, enableColumnMoving:false},
+        {field: "lastName", displayName: $scope.clientsDataHeaders[0].data00, cellClass:highlightCell},
+        {field: "clientIdentifier", displayName: $scope.clientsDataHeaders[0].data01, cellClass:highlightCell},
         {field: "data02", displayName: $scope.clientsDataHeaders[0].data02, cellClass:highlightCell},
-        {field: "data03", displayName: $scope.clientsDataHeaders[0].data03, cellClass:highlightCell},
-        {field: "data04", displayName: $scope.clientsDataHeaders[0].data04, cellClass:highlightCell},
-        {field: "data05", displayName: $scope.clientsDataHeaders[0].data05, cellClass:highlightCell},
-        {field: "data06", displayName: $scope.clientsDataHeaders[0].data06, cellClass:highlightCell},
-        {field: "data07", displayName: $scope.clientsDataHeaders[0].data07, cellClass:highlightCell},
-        {field: "data08", displayName: $scope.clientsDataHeaders[0].data08, cellClass:highlightCell},
-        {field: "data09", displayName: $scope.clientsDataHeaders[0].data09, cellClass:highlightCell},
+        {field: "primaryMorbidCondition", displayName: $scope.clientsDataHeaders[0].data03, cellClass:highlightCell},
+        {field: "coMorbidConditions", displayName: $scope.clientsDataHeaders[0].data04, cellClass:highlightCell},
+        {field: "noReadingThreshold", displayName: $scope.clientsDataHeaders[0].data05, cellClass:highlightCell},
+        {field: "language", displayName: $scope.clientsDataHeaders[0].data06, cellClass:highlightCell},
+        {field: "gender", displayName: $scope.clientsDataHeaders[0].data07, cellClass:highlightCell},
+        {field: "timezone", displayName: $scope.clientsDataHeaders[0].data08, cellClass:highlightCell},
+        {field: "dob", displayName: $scope.clientsDataHeaders[0].data09, cellClass:highlightCell},
         //{field: 'editcol', displayName: $scope.clientsDataHeaders[0].editcol, cellTemplate:'<img class="zicon" alt=""/>'}
         {field: 'editcol', displayName: $scope.clientsDataHeaders[0].editcol, cellTemplate:'<div> <a ui-sref="index.clients" ><img class="editicon" alt=""/></a></div>'}
     ];
 
-    $scope.clientGridOptions.data = $scope.clientsData;
+    //$scope.clientGridOptions.data = $scope.clientsData;  //TODO:
+
+    $http.get('http://localhost:4000/clients')
+        .success(function(data) {
+            $scope.clientGridOptions.data = data;
+        });
 
     $scope.clientGridOptions.multiSelect = false;
     $scope.clientGridOptions.modifierKeysToMultiSelect = false;
@@ -891,7 +902,12 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants) {
         gridApi.selection.on.rowSelectionChanged($scope,function(row){
             var msg = 'row selected ' + row.isSelected + '; client = ' + row.entity.metric;
             $log.log(msg);
+            //$log.log($scope.clientGridOptions.data[1]);
+            //$log.log(row);
 
+            $scope.phoneNumberAccounts = [ ];
+            $scope.emailAccounts = [ ];
+            copyClientData($scope, row.entity, $log);
             //*************************
 
             /*for(i = 0; i < $scope.clientDetailsData2.length; i++){
@@ -919,11 +935,11 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants) {
                 }
             } */
 
-            $scope.clientDetailsData2 = addSubGridComponents($scope, $scope.clientDetailsData2);
+            //$scope.clientDetailsData2 = addSubGridComponents($scope, $scope.clientDetailsData2);
             //*************************
 
-            $scope.clientDetailGridOptions.data = $scope.clientDetailsData2; //THIS IS HOW YOU CHANGE THE dataset
-            $interval( function() {$scope.gridApi.selection.selectRow($scope.clientDetailGridOptions.data[0]);}, 0, 1);
+            //$scope.clientDetailGridOptions.data = $scope.clientDetailsData2; //THIS IS HOW YOU CHANGE THE dataset
+            //$interval( function() {$scope.gridApi.selection.selectRow($scope.clientDetailGridOptions.data[0]);}, 0, 1);
         });
     };
 

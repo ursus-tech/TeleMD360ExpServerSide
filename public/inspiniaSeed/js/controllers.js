@@ -242,10 +242,9 @@ function findIndex($scope, $log, typesList, selectedOption){
 
 function copyClientData($scope, record, $log) {
     const notProvided = "NOT PROVIDED by server";
+    const defaultDate = "01-01-1900";
 
-    $log.log(record);
-
-    //$scope.client.fname = record.firstName;
+    $log.debug(record);
 
     $scope.client.fname = record.firstName || notProvided;
     $scope.client.mname = record.middleName || notProvided;
@@ -259,16 +258,19 @@ function copyClientData($scope, record, $log) {
     $scope.client.genderType = record.gender;
     $scope.client.morbidConditionType = record.primaryMorbidCondition;
     $scope.client.coMorbidConditionTypes = record.coMorbidConditions;
-    $scope.client.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
+    $scope.client.timezoneType = record.timezone;
     $scope.client.ivrPin =  record.IVRPin;
     $scope.client.timerTimeout = record.timerTimeout;
     $scope.client.noReadingThreshold  = record.noReadingThreshold;
     $scope.client.phonenumberType = record.phone || 'Mobile';
     $scope.client.emailaddressType = record.email || 'Personal';
 
-
-    if ($scope.client.dob !== 'undefined') {
+    //check if the date is a valid date; if so convert to date format; if not assign default date
+    if ( ($scope.client.dob !== 'undefined') ) {
         $scope.client.dob = new Date($scope.client.dob);
+        if (!(angular.isDate($scope.client.dob))) {
+            $scope.client.dob = new Date(defaultDate);
+        }
     }
 
     //populate the phone numbers already stored in the server-side database
@@ -339,145 +341,6 @@ function copyClientData($scope, record, $log) {
 
 }
 
-
-
-function copyClientData_Orig($scope, record, $log){
-    const notProvided = "NOT PROVIDED by server";
-
-    $scope.fname = record.firstName || notProvided;
-    $scope.mname = record.middleName || notProvided;
-    $scope.lname = record.lastName || notProvided;
-    $scope.height = record.height || notProvided;
-    $scope.weight = record.weight || notProvided;
-    $scope.dob = record.dob || notProvided;
-    $scope.ssn = record.ssn || notProvided;
-    $scope.clientid = record.clientIdentifier || notProvided;
-    $scope.languageType = record.language;
-    $scope.genderType = record.gender;
-    $scope.morbidConditionType = record.coMorbidConditions[0];
-    $scope.coMorbidConditionType = record.coMorbidConditions[1];
-    $scope.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
-    $scope.ivrPin =  record.IVRPin;
-    $scope.timerTimeout = record.timerTimeout;
-    $scope.noReadingThreshold  = record.noReadingThreshold;
-
-    $scope.phonenumber = record.phonenumber || notProvided;
-    $scope.phonenumberType = record.phone || 'Mobile';
-    $scope.emailaddressType = record.email || 'Personal';
-
-    //populate the phone numbers already stored in the server-side database
-    for	(index = 0; index < record.phoneNumbers.length; index++) {
-        $scope.phoneNumberAccounts.push(
-            {   phonenumber: record.phoneNumbers[index].subscriberNumber,
-                type: record.phoneNumbers[index].type
-            });
-    }
-
-    //populate the email addresses already stored in the server-side database
-    for	(index = 0; index < record.emailAddresses.length; index++) {
-        $scope.emailAccounts.push(
-            {   address: record.emailAddresses[index].email,
-                type: record.emailAddresses[index].type
-            });
-    }
-
-
-    $log.debug("selectedLanguage = " + $scope.languageType.toString());
-    $log.debug("LanguageList = ");
-    $log.debug($scope.languageTypes);
-    var selectedLanguageInd = findIndex($scope, $log, $scope.languageTypes, $scope.languageType);
-    $scope.selectedLanguage =  $scope.languageTypes[selectedLanguageInd];
-
-    $log.debug("selectedGender = " + $scope.genderType.toString());
-    $log.debug("GenderList = ");
-    $log.debug($scope.genderTypes);
-    var selectedGenderInd = findIndex($scope, $log, $scope.genderTypes, $scope.genderType);
-    $scope.selectedGender =  $scope.genderTypes[selectedGenderInd];
-
-    $log.debug("selectedMorbidCondition = " + $scope.morbidConditionType.toString());
-    $log.debug("MorbidConditionsList = ");
-    $log.debug($scope.morbidConditionTypes);
-    var selectedMorbidConditionInd = findIndex($scope, $log, $scope.morbidConditionTypes, $scope.morbidConditionType);
-    $scope.selectedMorbidCondition =  $scope.morbidConditionTypes[selectedMorbidConditionInd];
-
-    $log.debug("selectedCoMorbidCondition = " + $scope.coMorbidConditionType.toString());
-    $log.debug("CoMorbidConditionsList = ");
-    $log.debug($scope.coMorbidConditionTypes);
-    var selectedCoMorbidConditionInd = findIndex($scope, $log, $scope.coMorbidConditionTypes, $scope.coMorbidConditionType);
-    $scope.selectedCoMorbidCondition =  $scope.coMorbidConditionTypes[selectedCoMorbidConditionInd];
-    $log.debug("selectedCoMorbidCondition = " + $scope.selectedCoMorbidCondition.value.toString());
-
-    $log.debug("selectedTimezone = " + $scope.timezoneType.toString());
-    $log.debug("TimezoneList = ");
-    $log.debug($scope.timezoneTypes);
-    var selectedTimezoneInd = findIndex($scope, $log, $scope.timezoneTypes, $scope.timezoneType);
-    $scope.selectedTimezone =  $scope.timezoneTypes[selectedTimezoneInd];
-
-    $log.debug("selectedPhoneTypes = " + $scope.phonenumberType.toString());
-    $log.debug("PhoneNumberTypeList = ");
-    $log.debug($scope.phonenumberTypes);
-    var selectedPhoneNumberInd = findIndex($scope, $log, $scope.phonenumberTypes, $scope.phonenumberType);
-    $scope.selectedPhoneNumberType =  $scope.phonenumberTypes[selectedPhoneNumberInd];
-
-    $log.debug("selectedEmailAddressTypes = " + $scope.emailaddressType.toString());
-    $log.debug("EmailAddressTypeList = ");
-    $log.debug($scope.emailaddressTypes);
-    var selectedEmailAddressTypeInd = findIndex($scope, $log, $scope.emailaddressTypes, $scope.emailaddressType);
-    $scope.selectedEmailAddressType =  $scope.emailaddressTypes[selectedEmailAddressTypeInd];
-
-    //$scope.selectedOption2 = $scope.genderTypes[1];
-    //$log.debug($scope.selectedOption2);
-
-
-    //$scope.selectedOption3 = $scope.genderTypes3[2];
-    //var ind = findIndex($scope, $log, $scope.genderTypes3, $scope.selectedOption3);
-    //var selectedEntry = $scope.genderTypes3[ind];
-    //$scope.selectedOption3 = selectedEntry;
-    //$scope.selectedOption3 = $scope.genderTypes3[2];
-
-    //$log.debug($scope.selectedOption3);
-    //$log.debug($scope.genderTypes3[2]);
-    //$log.debug($scope.genderTypes3);
-
-
-    /*$log.debug('######################');
-    $scope.selectedOption4 = 'Other';
-    $log.debug($scope.selectedOption4);
-    $log.debug($scope.genderTypes4);
-
-    var x = new Object();
-    x = {value:'Other'};
-    $log.debug('######################');
-    $scope.selectedOption3 = {value:'Other'};
-    $log.debug($scope.selectedOption3);
-    $log.debug($scope.genderTypes3); */
-
-
-    //$log.debug($scope.genderTypes4[2]);
-    //$scope.selectedOption4 = $scope.genderTypes4[2];
-    //$log.debug($scope.selectedOption4);
-
-   /* if ($scope.selectedOption4 == $scope.genderTypes4[2]){
-        $log.debug("MATCH");
-    }
-    else {
-        $log.debug("ERROR");
-    }
-
-    var ind = -1;
-    for	(index = 0; index < $scope.genderTypes4.length; index++) {
-        if ( $scope.genderTypes4[index] == $scope.selectedOption4 ) {
-            ind = index;
-            $log.debug(ind);
-            break;
-        }
-    }
-
-    $scope.selectedOption4 = $scope.genderTypes4[ind]; */
-
-
-
-}
 
 
 
@@ -1023,8 +886,8 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http, clientsF
     clientsFactory.getClients().
         success(function(data, status, headers, config){
             $scope.clientGridOptions.data = data;
-            $log.log( $scope.clientGridOptions.data);
-            $log.log("******************** 2");
+            $log.debug( $scope.clientGridOptions.data);
+            $log.debug("******************** 2");
         }).
         error(function(data, status, headers, config) {
             // called asynchronously if an error occurs

@@ -7,7 +7,7 @@
 /**
  * MainCtrl - controller
  */
-function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
+function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http, clientsFactory) {
 
     this.userName = 'Example user';
     this.helloText = 'Welcome in SeedProject';
@@ -19,16 +19,21 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
 
     //gridSubGRid($scope);  //creates the grid with subgrid - in patient details
-    $scope.clientForm = {};
+    //$scope.clientForm = {};
     //$scope.clientForm.fname = "Jakob";
     //$scope.clientForm.lname  = "Jenkov";
+    $scope.client = {};
+
+
     $log.debug("DEBUG IS WORKING");
 
     $scope.testname = "MAHIMA"
     $scope.testfield = "MAHIMA"
     //myFactoryFunction($scope, $http, $log);
 
-    clientsUiGrid($scope, $log, $interval, uiGridConstants, $http);
+
+
+    clientsUiGrid($scope, $log, $interval, uiGridConstants, $http, clientsFactory);
 
     clientDetailsGridSubGrid($scope, $log,  $interval, uiGridConstants);
 
@@ -102,26 +107,6 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         { id:18, value:'Unspecified'}
     ];
 
-    $scope.coMorbidConditionTypes = [
-        { id:1, value:'Asthmatic'},
-        { id:2, value:'CAD'},
-        { id:3, value:'Congestive Heart Failure'},
-        { id:4, value:'COPD'},
-        { id:5, value:'Diabetes'},
-        { id:6, value:'Diabetes Type 1'},
-        { id:7, value:'Diabetes Type 2'},
-        { id:8, value:'Eval'},
-        { id:9, value:'Gestatioanal Diabetes'},
-        { id:10, value:'Heart Failure'},
-        { id:11, value:'Hypertension'},
-        { id:12, value:'Major Depressive Disorder'},
-        { id:13, value:'None'},
-        { id:14, value:'Other'},
-        { id:15, value:'Pre Diabetes'},
-        { id:16, value:'Respiratory Failure'},
-        { id:17, value:'Trach'},
-        { id:18, value:'Unspecified'}
-    ];
 
 
 
@@ -152,25 +137,54 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
         { id:4, value:'Warranty'}
     ];
 
+    /*
+    $scope.update = function(client) {
+        $scope.orgClient = angular.copy($scope.client);
+        $log.log("^^^^^^^^^^^^^^^^^");
+        $log.log($scope.client.fname);
+        $log.log(clientForm.fname.value);
 
+        //$scope.client.fname = form.cfname.value;
 
-    $scope.SaveNewClient = function() {
-        var fname = $scope.clientForm.fname;
-        var gender = $scope.clientForm.selectedGender;
-        var language = $scope.clientForm.selectedLanguage;
+    }; */
 
+    $scope.reset = function(form) {
+        if (form) {
+            form.$setPristine();
+            form.$setUntouched();
+        }
+        //$scope.client = angular.copy($scope.master);
+        $scope.client = {};
 
-        var morbidConditions = $scope.clientForm.selectedMorbidCondition;
+    };
+
+    $scope.saveNewClient = function(client) {
+
+        $scope.orgClient = angular.copy($scope.client);
+
+        var fname = $scope.client.fname || "";
+        var gender = "";
+        if (typeof $scope.client.selectedGender === 'undefined')  { gender = ""} else { gender = $scope.client.selectedGender.value};
+
+        var language = "";
+        if (typeof $scope.client.selectedLanguage === 'undefined')  { language = ""} else { language = $scope.client.selectedLanguage.value};
+
+        var phonenumber = "";
+        if (typeof  $scope.client.phonenumber === 'undefined')  { phonenumber = ""} else { phonenumber =  $scope.client.phonenumber.value};
+
+        var morbidConditions = "";
+        if (typeof  $scope.client.selectedMorbidCondition === 'undefined')  { morbidConditions = ""} else { morbidConditions =  $scope.client.selectedMorbidCondition.value};
 
         var coMorbidConditions = "[";
-        for (var i = 0; i < $scope.clientForm.selectedCoMorbidCondition.length; i++) {
-            coMorbidConditions += $scope.clientForm.selectedCoMorbidCondition[i].value + ", ";
+
+        if (typeof  $scope.client.selectedcoMorbidConditions !== 'undefined')  {
+            for (var i = 0; i < $scope.client.selectedcoMorbidConditions.length; i++) {
+                coMorbidConditions += $scope.client.selectedcoMorbidConditions[i].value + ", ";
+            }
         }
         coMorbidConditions += "]";
 
-
-        var results = fname + " " +  gender.value + " " + language.value + " " + morbidConditions.value + " " + coMorbidConditions;
-
+        var results = fname + " " +  gender + " " + language + " " + morbidConditions + " " + coMorbidConditions;
         alert('results = ' + results);
     }
 
@@ -180,9 +194,12 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
     ];
 
     $scope.addPhoneNumberAccounts = function () {
+        $log.log("In addPhoneNumberAccounts");
+        $log.log($scope.client.phonenumber);
+
         $scope.phoneNumberAccounts.push(
-            {   phonenumber: $scope.clientForm.phonenumber,
-                type: $scope.clientForm.selectedPhoneNumberType.value
+            {   phonenumber: $scope.client.phonenumber,
+                type: $scope.client.selectedPhoneNumberType.value
             });
     };
 
@@ -194,8 +211,8 @@ function MainCtrl($scope, $log, $interval, uiGridConstants, $resource, $http) {
 
     $scope.addEmailAccounts = function () {
         $scope.emailAccounts.push(
-            {   address: $scope.clientForm.emailaddress,
-                type: $scope.clientForm.selectedEmailAddressType.value
+            {   address: $scope.client.emailaddress,
+                type: $scope.client.selectedEmailAddressType.value
             });
     };
 
@@ -223,29 +240,36 @@ function findIndex($scope, $log, typesList, selectedOption){
     return ind;
 }
 
-
-function copyClientData($scope, record, $log){
+function copyClientData($scope, record, $log) {
     const notProvided = "NOT PROVIDED by server";
 
-    $scope.clientForm.fname = record.firstName || notProvided;
-    $scope.clientForm.mname = record.middleName || notProvided;
-    $scope.clientForm.lname = record.lastName || notProvided;
-    $scope.clientForm.height = record.height || notProvided;
-    $scope.clientForm.weight = record.weight || notProvided;
-    $scope.clientForm.dob = record.dob || notProvided;
-    $scope.clientForm.ssn = record.ssn || notProvided;
-    $scope.clientForm.clientid = record.clientIdentifier || notProvided;
-    $scope.clientForm.languageType = record.language;
-    $scope.clientForm.genderType = record.gender;
-    $scope.clientForm.morbidConditionType = record.coMorbidConditions[0];
-    $scope.clientForm.coMorbidConditionType = record.coMorbidConditions[1];
-    $scope.clientForm.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
-    $scope.clientForm.ivrPin =  record.IVRPin;
-    $scope.clientForm.timerTimeout = record.timerTimeout;
-    $scope.clientForm.noReadingThreshold  = record.noReadingThreshold;
+    $log.log(record);
 
-    $scope.clientForm.phonenumberType = record.phone || 'Mobile';
-    $scope.clientForm.emailaddressType = record.email || 'Personal';
+    //$scope.client.fname = record.firstName;
+
+    $scope.client.fname = record.firstName || notProvided;
+    $scope.client.mname = record.middleName || notProvided;
+    $scope.client.lname = record.lastName || notProvided;
+    $scope.client.height = record.height || notProvided;
+    $scope.client.weight = record.weight || notProvided;
+    $scope.client.dob = record.dob || notProvided;
+    $scope.client.ssn = record.ssn || notProvided;
+    $scope.client.clientid = record.clientIdentifier || notProvided;
+    $scope.client.languageType = record.language;
+    $scope.client.genderType = record.gender;
+    $scope.client.morbidConditionType = record.primaryMorbidCondition;
+    $scope.client.coMorbidConditionTypes = record.coMorbidConditions;
+    $scope.client.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
+    $scope.client.ivrPin =  record.IVRPin;
+    $scope.client.timerTimeout = record.timerTimeout;
+    $scope.client.noReadingThreshold  = record.noReadingThreshold;
+    $scope.client.phonenumberType = record.phone || 'Mobile';
+    $scope.client.emailaddressType = record.email || 'Personal';
+
+
+    if ($scope.client.dob !== 'undefined') {
+        $scope.client.dob = new Date($scope.client.dob);
+    }
 
     //populate the phone numbers already stored in the server-side database
     for	(index = 0; index < record.phoneNumbers.length; index++) {
@@ -264,48 +288,142 @@ function copyClientData($scope, record, $log){
     }
 
 
-    $log.debug("selectedLanguage = " + $scope.clientForm.languageType.toString());
+    $log.debug("selectedLanguage = " + $scope.client.languageType.toString());
     $log.debug("LanguageList = ");
     $log.debug($scope.languageTypes);
-    var selectedLanguageInd = findIndex($scope, $log, $scope.languageTypes, $scope.clientForm.languageType);
-    $scope.clientForm.selectedLanguage =  $scope.languageTypes[selectedLanguageInd];
+    var selectedLanguageInd = findIndex($scope, $log, $scope.languageTypes, $scope.client.languageType);
+    $scope.client.selectedLanguage =  $scope.languageTypes[selectedLanguageInd];
 
-    $log.debug("selectedGender = " + $scope.clientForm.genderType.toString());
+    $log.debug("selectedGender = " + $scope.client.genderType.toString());
     $log.debug("GenderList = ");
     $log.debug($scope.genderTypes);
-    var selectedGenderInd = findIndex($scope, $log, $scope.genderTypes, $scope.clientForm.genderType);
-    $scope.clientForm.selectedGender =  $scope.genderTypes[selectedGenderInd];
+    var selectedGenderInd = findIndex($scope, $log, $scope.genderTypes, $scope.client.genderType);
+    $scope.client.selectedGender =  $scope.genderTypes[selectedGenderInd];
 
-    $log.debug("selectedMorbidCondition = " + $scope.clientForm.morbidConditionType.toString());
+    $log.debug("selectedMorbidCondition = " + $scope.client.morbidConditionType.toString());
     $log.debug("MorbidConditionsList = ");
     $log.debug($scope.morbidConditionTypes);
-    var selectedMorbidConditionInd = findIndex($scope, $log, $scope.morbidConditionTypes, $scope.clientForm.morbidConditionType);
-    $scope.clientForm.selectedMorbidCondition =  $scope.morbidConditionTypes[selectedMorbidConditionInd];
+    var selectedMorbidConditionInd = findIndex($scope, $log, $scope.morbidConditionTypes, $scope.client.morbidConditionType);
+    $scope.client.selectedMorbidCondition =  $scope.morbidConditionTypes[selectedMorbidConditionInd];
 
-    $log.debug("selectedCoMorbidCondition = " + $scope.clientForm.coMorbidConditionType.toString());
-    $log.debug("CoMorbidConditionsList = ");
-    $log.debug($scope.coMorbidConditionTypes);
-    var selectedCoMorbidConditionInd = findIndex($scope, $log, $scope.coMorbidConditionTypes, $scope.clientForm.coMorbidConditionType);
-    $scope.clientForm.selectedCoMorbidCondition =  $scope.coMorbidConditionTypes[selectedCoMorbidConditionInd];
-    $log.debug("selectedCoMorbidCondition = " + $scope.clientForm.selectedCoMorbidCondition.value.toString());
+    $scope.client.selectedcoMorbidConditions = [];
+    $log.debug("selectedCoMorbidConditions needs to include: " + $scope.client.coMorbidConditionTypes);
+    for (var index in $scope.client.coMorbidConditionTypes) {
+        $log.debug("The index be: " + index);
+        $log.debug("Looking for coMorbid Condition: " + $scope.client.coMorbidConditionTypes[index]);
+        var selectedcoMorbidConditionInd = findIndex($scope, $log, $scope.morbidConditionTypes, $scope.client.coMorbidConditionTypes[index]);
+        $log.debug("The index found was " + selectedcoMorbidConditionInd);
+        $scope.client.selectedcoMorbidConditions.push( $scope.morbidConditionTypes[selectedcoMorbidConditionInd] );
+    }
 
-    $log.debug("selectedTimezone = " + $scope.clientForm.timezoneType.toString());
+    $log.debug("The selected list  " + $scope.client.selectedcoMorbidConditions);
+
+    $log.debug("selectedTimezone = " + $scope.client.timezoneType.toString());
     $log.debug("TimezoneList = ");
     $log.debug($scope.timezoneTypes);
-    var selectedTimezoneInd = findIndex($scope, $log, $scope.timezoneTypes, $scope.clientForm.timezoneType);
-    $scope.clientForm.selectedTimezone =  $scope.timezoneTypes[selectedTimezoneInd];
+    var selectedTimezoneInd = findIndex($scope, $log, $scope.timezoneTypes, $scope.client.timezoneType);
+    $scope.client.selectedTimezone =  $scope.timezoneTypes[selectedTimezoneInd];
 
-    $log.debug("selectedPhoneTypes = " + $scope.clientForm.phonenumberType.toString());
+    $log.debug("selectedPhoneTypes = " + $scope.client.phonenumberType.toString());
     $log.debug("PhoneNumberTypeList = ");
     $log.debug($scope.phonenumberTypes);
-    var selectedPhoneNumberInd = findIndex($scope, $log, $scope.phonenumberTypes, $scope.clientForm.phonenumberType);
-    $scope.clientForm.selectedPhoneNumberType =  $scope.phonenumberTypes[selectedPhoneNumberInd];
+    var selectedPhoneNumberInd = findIndex($scope, $log, $scope.phonenumberTypes, $scope.client.phonenumberType);
+    $scope.client.selectedPhoneNumberType =  $scope.phonenumberTypes[selectedPhoneNumberInd];
 
-    $log.debug("selectedEmailAddressTypes = " + $scope.clientForm.emailaddressType.toString());
+    $log.debug("selectedEmailAddressTypes = " + $scope.client.emailaddressType.toString());
     $log.debug("EmailAddressTypeList = ");
     $log.debug($scope.emailaddressTypes);
-    var selectedEmailAddressTypeInd = findIndex($scope, $log, $scope.emailaddressTypes, $scope.clientForm.emailaddressType);
-    $scope.clientForm.selectedEmailAddressType =  $scope.emailaddressTypes[selectedEmailAddressTypeInd];
+    var selectedEmailAddressTypeInd = findIndex($scope, $log, $scope.emailaddressTypes, $scope.client.emailaddressType);
+    $scope.client.selectedEmailAddressType =  $scope.emailaddressTypes[selectedEmailAddressTypeInd];
+
+
+}
+
+
+
+function copyClientData_Orig($scope, record, $log){
+    const notProvided = "NOT PROVIDED by server";
+
+    $scope.fname = record.firstName || notProvided;
+    $scope.mname = record.middleName || notProvided;
+    $scope.lname = record.lastName || notProvided;
+    $scope.height = record.height || notProvided;
+    $scope.weight = record.weight || notProvided;
+    $scope.dob = record.dob || notProvided;
+    $scope.ssn = record.ssn || notProvided;
+    $scope.clientid = record.clientIdentifier || notProvided;
+    $scope.languageType = record.language;
+    $scope.genderType = record.gender;
+    $scope.morbidConditionType = record.coMorbidConditions[0];
+    $scope.coMorbidConditionType = record.coMorbidConditions[1];
+    $scope.timezoneType = record.timezone || 'Pacific Standard Time';  //TODO: change this
+    $scope.ivrPin =  record.IVRPin;
+    $scope.timerTimeout = record.timerTimeout;
+    $scope.noReadingThreshold  = record.noReadingThreshold;
+
+    $scope.phonenumber = record.phonenumber || notProvided;
+    $scope.phonenumberType = record.phone || 'Mobile';
+    $scope.emailaddressType = record.email || 'Personal';
+
+    //populate the phone numbers already stored in the server-side database
+    for	(index = 0; index < record.phoneNumbers.length; index++) {
+        $scope.phoneNumberAccounts.push(
+            {   phonenumber: record.phoneNumbers[index].subscriberNumber,
+                type: record.phoneNumbers[index].type
+            });
+    }
+
+    //populate the email addresses already stored in the server-side database
+    for	(index = 0; index < record.emailAddresses.length; index++) {
+        $scope.emailAccounts.push(
+            {   address: record.emailAddresses[index].email,
+                type: record.emailAddresses[index].type
+            });
+    }
+
+
+    $log.debug("selectedLanguage = " + $scope.languageType.toString());
+    $log.debug("LanguageList = ");
+    $log.debug($scope.languageTypes);
+    var selectedLanguageInd = findIndex($scope, $log, $scope.languageTypes, $scope.languageType);
+    $scope.selectedLanguage =  $scope.languageTypes[selectedLanguageInd];
+
+    $log.debug("selectedGender = " + $scope.genderType.toString());
+    $log.debug("GenderList = ");
+    $log.debug($scope.genderTypes);
+    var selectedGenderInd = findIndex($scope, $log, $scope.genderTypes, $scope.genderType);
+    $scope.selectedGender =  $scope.genderTypes[selectedGenderInd];
+
+    $log.debug("selectedMorbidCondition = " + $scope.morbidConditionType.toString());
+    $log.debug("MorbidConditionsList = ");
+    $log.debug($scope.morbidConditionTypes);
+    var selectedMorbidConditionInd = findIndex($scope, $log, $scope.morbidConditionTypes, $scope.morbidConditionType);
+    $scope.selectedMorbidCondition =  $scope.morbidConditionTypes[selectedMorbidConditionInd];
+
+    $log.debug("selectedCoMorbidCondition = " + $scope.coMorbidConditionType.toString());
+    $log.debug("CoMorbidConditionsList = ");
+    $log.debug($scope.coMorbidConditionTypes);
+    var selectedCoMorbidConditionInd = findIndex($scope, $log, $scope.coMorbidConditionTypes, $scope.coMorbidConditionType);
+    $scope.selectedCoMorbidCondition =  $scope.coMorbidConditionTypes[selectedCoMorbidConditionInd];
+    $log.debug("selectedCoMorbidCondition = " + $scope.selectedCoMorbidCondition.value.toString());
+
+    $log.debug("selectedTimezone = " + $scope.timezoneType.toString());
+    $log.debug("TimezoneList = ");
+    $log.debug($scope.timezoneTypes);
+    var selectedTimezoneInd = findIndex($scope, $log, $scope.timezoneTypes, $scope.timezoneType);
+    $scope.selectedTimezone =  $scope.timezoneTypes[selectedTimezoneInd];
+
+    $log.debug("selectedPhoneTypes = " + $scope.phonenumberType.toString());
+    $log.debug("PhoneNumberTypeList = ");
+    $log.debug($scope.phonenumberTypes);
+    var selectedPhoneNumberInd = findIndex($scope, $log, $scope.phonenumberTypes, $scope.phonenumberType);
+    $scope.selectedPhoneNumberType =  $scope.phonenumberTypes[selectedPhoneNumberInd];
+
+    $log.debug("selectedEmailAddressTypes = " + $scope.emailaddressType.toString());
+    $log.debug("EmailAddressTypeList = ");
+    $log.debug($scope.emailaddressTypes);
+    var selectedEmailAddressTypeInd = findIndex($scope, $log, $scope.emailaddressTypes, $scope.emailaddressType);
+    $scope.selectedEmailAddressType =  $scope.emailaddressTypes[selectedEmailAddressTypeInd];
 
     //$scope.selectedOption2 = $scope.genderTypes[1];
     //$log.debug($scope.selectedOption2);
@@ -359,13 +477,11 @@ function copyClientData($scope, record, $log){
 
 
 
-    $scope.clientForm.employer = notProvided;
-    $scope.clientForm.employer = notProvided;
-    $scope.clientForm.employer = notProvided;
-
 }
 
 
+
+/*
 function myFactoryFunction($scope, $http, $log) {
     //$http.get('http://localhost:4000/singleUser').
     $http.get('http://localhost:4000/clients').
@@ -389,6 +505,8 @@ function myFactoryFunction($scope, $http, $log) {
             $scope.testname = "ERROR";
         });
 }
+*/
+
 
 /*$scope.myData = [
  {
@@ -440,7 +558,7 @@ var highlightCellChild = function highlightCellChild(grid, row, col, rowRenderIn
 };
 
 function addSubGridComponents($scope, someData){
-    for(i = 0; i < someData.length; i++){
+    for( i = 0; i < someData.length; i++){
         someData[i].subGridOptions = {
             headerTemplate: './templates/header-template.html',
 
@@ -786,7 +904,12 @@ function clientDetailsGridSubGrid($scope, $log,  $interval, uiGridConstants) {
 }
 
 
-function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http) {
+
+
+function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http, clientsFactory, client) {
+
+
+
     $scope.clientsDataHeaders = [
         {
             "metric": "First Name",
@@ -870,6 +993,7 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http) {
 
     };
 
+
     $scope.clientGridOptions.columnDefs = [
         {field: "firstName", displayName: $scope.clientsDataHeaders[0].metric, cellClass:highlightCell, cellTooltip:true, enableColumnMoving:false},
         {field: "lastName", displayName: $scope.clientsDataHeaders[0].data00, cellClass:highlightCell},
@@ -887,11 +1011,31 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http) {
     ];
 
     //$scope.clientGridOptions.data = $scope.clientsData;  //TODO:
-
-    $http.get('http://localhost:4000/clients')
+    /*$http.get('http://localhost:4000/clients')
         .success(function(data) {
             $scope.clientGridOptions.data = data;
+            $log.log("******************** 1.5");
         });
+*/
+
+    $log.log("******************** 1");
+
+    clientsFactory.getClients().
+        success(function(data, status, headers, config){
+            $scope.clientGridOptions.data = data;
+            $log.log( $scope.clientGridOptions.data);
+            $log.log("******************** 2");
+        }).
+        error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            $scope.testname = "ERROR";
+            $log.error("getClients failed" + status);
+        });
+
+
+    $log.log("******************** 3");
+
 
     $scope.clientGridOptions.multiSelect = false;
     $scope.clientGridOptions.modifierKeysToMultiSelect = false;
@@ -899,48 +1043,23 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http) {
     $scope.clientGridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
         //$log.debug("MAHIMA IN api");
-        gridApi.selection.on.rowSelectionChanged($scope,function(row){
+        gridApi.selection.on.rowSelectionChanged($scope, function (row) {
             var msg = 'row selected ' + row.isSelected + '; client = ' + row.entity.metric;
             $log.log(msg);
             //$log.log($scope.clientGridOptions.data[1]);
             //$log.log(row);
 
-            $scope.phoneNumberAccounts = [ ];
-            $scope.emailAccounts = [ ];
+            $scope.phoneNumberAccounts = [];
+            $scope.emailAccounts = [];
             copyClientData($scope, row.entity, $log);
-            //*************************
 
-            /*for(i = 0; i < $scope.clientDetailsData2.length; i++){
-                $scope.clientDetailsData2[i].subGridOptions = {
-                    headerTemplate: './templates/header-template.html',
-                    enableHorizontalScrollbar:0,
-                    enableVerticalScrollbar:0,
-                    columnDefs: [
-                        //{field: "metric", displayName: $scope.myDataHeaders[0].metric, cellClass:'red', cellTooltip:true, enableColumnMoving:false},
-                        {field: 'metric', displayName: $scope.clientDetailsDataHeaders[0].metric, cellClass:highlightCellChild, cellTooltip:true, enableColumnMoving:false},
-                        {field: "data01", displayName: $scope.clientDetailsDataHeaders[0].data01, cellClass:highlightCellChild},
-                        {field: "data02", displayName: $scope.clientDetailsDataHeaders[0].data02, cellClass:highlightCellChild},
-                        {field: "data03", displayName: $scope.clientDetailsDataHeaders[0].data03, cellClass:highlightCellChild},
-                        {field: "data04", displayName: $scope.clientDetailsDataHeaders[0].data04, cellClass:highlightCellChild},
-                        {field: "data05", displayName: $scope.clientDetailsDataHeaders[0].data05, cellClass:highlightCellChild},
-                        {field: "data06", displayName: $scope.clientDetailsDataHeaders[0].data06, cellClass:highlightCellChild},
-                        {field: "data07", displayName: $scope.clientDetailsDataHeaders[0].data07, cellClass:highlightCellChild},
-                        {field: "data08", displayName: $scope.clientDetailsDataHeaders[0].data08, cellClass:highlightCellChild},
-                        {field: "data09", displayName: $scope.clientDetailsDataHeaders[0].data09, cellClass:highlightCellChild},
-                        {field: "data10", displayName: $scope.clientDetailsDataHeaders[0].data10, cellClass:highlightCellChild},
-                        {field: "data11", displayName: $scope.clientDetailsDataHeaders[0].data11, cellClass:highlightCellChild},
-                        {field: "data12", displayName: $scope.clientDetailsDataHeaders[0].data12, cellClass:highlightCellChild}
-                    ],
-                    data: $scope.clientDetailsData2[i].components
-                }
-            } */
-
-            //$scope.clientDetailsData2 = addSubGridComponents($scope, $scope.clientDetailsData2);
-            //*************************
 
             //$scope.clientDetailGridOptions.data = $scope.clientDetailsData2; //THIS IS HOW YOU CHANGE THE dataset
             //$interval( function() {$scope.gridApi.selection.selectRow($scope.clientDetailGridOptions.data[0]);}, 0, 1);
         });
+
+
+        $log.log("******************** 4");
     };
 
     $scope.toggleRowSelection = function($log) {
@@ -949,32 +1068,6 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http) {
         $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.OPTIONS);
         $log.debug("MAHIMA IN api");
     };
-   /* for(i = 0; i < $scope.clientsData.length; i++){
-        $scope.clientsData[i].subGridOptions = {
-            headerTemplate: './templates/header-template.html',
-            enableHorizontalScrollbar:0,
-            enableVerticalScrollbar:0,
-            columnDefs: [
-                //{field: "metric", displayName: $scope.myDataHeaders[0].metric, cellClass:'red', cellTooltip:true, enableColumnMoving:false},
-                {field: 'metric', displayName: $scope.clientsDataHeaders[0].metric, cellClass:highlightCellChild, cellTooltip:true, enableColumnMoving:false},
-                {field: "data01", displayName: $scope.clientsDataHeaders[0].data01, cellClass:highlightCellChild},
-                {field: "data02", displayName: $scope.clientsDataHeaders[0].data02, cellClass:highlightCellChild},
-                {field: "data03", displayName: $scope.clientsDataHeaders[0].data03, cellClass:highlightCellChild},
-                {field: "data04", displayName: $scope.clientsDataHeaders[0].data04, cellClass:highlightCellChild},
-                {field: "data05", displayName: $scope.clientsDataHeaders[0].data05, cellClass:highlightCellChild},
-                {field: "data06", displayName: $scope.clientsDataHeaders[0].data06, cellClass:highlightCellChild},
-                {field: "data07", displayName: $scope.clientsDataHeaders[0].data07, cellClass:highlightCellChild},
-                {field: "data08", displayName: $scope.clientsDataHeaders[0].data08, cellClass:highlightCellChild},
-                {field: "data09", displayName: $scope.clientsDataHeaders[0].data09, cellClass:highlightCellChild},
-                {field: "data10", displayName: $scope.clientsDataHeaders[0].data10, cellClass:highlightCellChild}
-            ],
-            data: $scope.clientsData[i].components
-        }
-    } */
-
-
-
-
 
 }
 
@@ -1199,6 +1292,6 @@ function gridSubGRid($scope) {
 
 angular
     .module('inspinia')
-    .controller('MainCtrl', MainCtrl)
+    .controller('MainCtrl', MainCtrl, ['clientsFactory'])
 
 

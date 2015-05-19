@@ -64,9 +64,9 @@
 </select> -->
 
 
-<!-- <div>
+<div>
     {{clientForm.client.fname}} {{client.lname}} {{testfield}}
-</div> -->
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -78,89 +78,126 @@
 
             <div class="ibox-content ">
                 <div id="middlePanel" class="wrapper wrapper-content animated fadeInRightBig">
-                    <form class="form-horizontal">
+                    <form name="clientForm" class="form-horizontal" novalidate>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">First Name</label>
                             <div class="col-md-2">
-                                <input type="text" name="fname" ng-minlength=2 ng-maxlength=20
-                                                         ng-model="clientForm.fname" class="form-control">
-
-                            </div>
+                                <input type="text" name="fname" ng-minlength=2 ng-maxlength=20 required ng-model-options="{ updateOn: 'blur' }" class="form-control"
+                                                         data-ng-model="client.fname" class="form-control">
 
 
-                            <!-- <div class="col-md-2">
-                                <input type="text" placeholder=".col-md-4" name="fname" ng-minlength=2 ng-maxlength=20
-                                       ng-model="client.fname" required class="form-control">
+
                                 <div role="alert">
                                     <span class="error" ng-show="clientForm.fname.$error.required">Required!</span>
                                     <span class="error" ng-show="clientForm.fname.$error.minlength">Too short!</span>
                                     <span class="error" ng-show="clientForm.fname.$error.maxlength">Too long!</span>
                                 </div>
+
                             </div>
-                            -->
+
 
                             <label class="col-sm-2 control-label">Middle Name</label>
                             <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="mname"
-                                                         ng-model="clientForm.mname" class="form-control"></div>
+                                                         ng-model="client.mname" class="form-control"></div>
 
                             <label class="col-sm-2 control-label">Last Name</label>
-                            <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="lname"
-                                                         ng-model="clientForm.lname" required class="form-control">
+                            <div class="col-md-2">
+                                <input type="text" placeholder=".col-md-4" name="lname"
+                                                         ng-model="client.lname" required ng-model-options="{ updateOn: 'blur' }" class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.lname.$error.required">Required!</span>
+                                    <span class="error" ng-show="clientForm.lname.$error.minlength">Too short!</span>
+                                    <span class="error" ng-show="clientForm.lname.$error.maxlength">Too long!</span>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-5">
+
+                                <input type="button" ng-click="reset(form)" value="Reset" />
+                                <input type="submit" ng-click="update(client)" value="Save" />
+
+                                </button>
+                            </div>
+                        </div> -->
 
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Height (lb)</label>
 
-                            <div class="col-md-2"><input type="number" ng-model="clientForm.height" required
-                                                         class="form-control"></div>
+                            <div class="col-md-2">
+                                <input type="number" name="height" ng-model="client.height" required ng-model-options="{ updateOn: 'blur' }"
+                                                         class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.height.$error.required">Required!</span>
+                                </div>
+                            </div>
 
                             <label class="col-sm-2 control-label">Weight (lb)</label>
 
-                            <div class="col-md-2"><input type="number" ng-model="clientForm.weight" required
-                                                         class="form-control"></div>
+                            <div class="col-md-2">
+                                <input type="number" name="weight" ng-model="client.weight" required ng-model-options="{ updateOn: 'blur' }"
+                                                         class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.weight.$error.required">Required!</span>
+                                </div>
+                            </div>
+
+                            <!-- check the following for more details on the datepicker. -->
+                            <!-- https://github.com/g00fy-/angular-datepicker  -->
 
                             <label class="col-sm-2 control-label">DOB</label>
-                            <div class="input-group date">
-                                <input type="datetime" class="form-control" date-time ng-model="clientForm.dob" required view="date">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            </div>
-                        </div>
-                        <div role="alert">
-                            <span class="error" ng-show="client.height.$error.required">Required!</span>
-                        </div>
-                        <div role="alert">
-                            <span class="error" ng-show="client.weight.$error.required">Required!</span>
-                        </div>
-                        <div role="alert">
-                            <span class="error" ng-show="client.sampleDate.$error.required">Required!</span>
-                        </div>
 
+
+
+                            <div class="input-group date">
+
+
+                                <input type="datetime" name="dob" class="form-control" date-time data-ng-model="client.dob"  view="date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                            <div role="alert">
+                                <span class="error" ng-show="clientForm.dob.$error.required">Required!</span>
+                            </div>
+
+                        </div>
 
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">SSN</label>
 
-                            <div class="col-md-2"><input type="text" ng-model="clientForm.ssn" required
-                                                         class="form-control"></div>
+                            <div class="col-md-2"><input type="text" ng-model="client.ssn" name="ssn" ng-minlength=9 ng-maxlength=9 required ng-model-options="{ updateOn: 'blur' }"
+                                                         placeholder="123-45-6789" class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.ssn.$error.required">Required!</span>
+                                    <span class="error" ng-show="clientForm.ssn.$error.minlength">Too short!</span>
+                                    <span class="error" ng-show="clientForm.ssn.$error.maxlength">Too long!</span>
+                                </div>
+
+                            </div>
 
                             <label class="col-sm-2 control-label">ClientID</label>
+                            <div class="col-md-2"><input type="text" name="clientid" ng-model="client.clientid" required ng-model-options="{ updateOn: 'blur' }"
+                                                         class="form-control">
 
-                            <div class="col-md-2"><input type="text" ng-model="clientForm.clientid" required
-                                                         class="form-control"></div>
-                        </div>
-                        <div role="alert">
-                            <span class="error" ng-show="client.ssn.$error.required">Required!</span>
-                        </div>
-                        <div role="alert">
-                            <span class="error" ng-show="client.employer.$error.required">Required!</span>
-                        </div>
-                        <div role="alert">
-                            <span class="error" ng-show="client.clientid.$error.required">Required!</span>
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.clientid.$error.required">Required!</span>
+                                    <span class="error" ng-show="clientForm.clientid.$error.minlength">Too short!</span>
+                                    <span class="error" ng-show="clientForm.clientid.$error.maxlength">Too long!</span>
+                                </div>
+                            </div>
                         </div>
 
+
+                        <!-- check the following for more details on chosen select -->
+                        <!-- http://harvesthq.github.io/chosen/  -->
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
@@ -168,7 +205,7 @@
 
                             <div class="input-group">
                                 <select chosen id="languageTypes" class="chosen-select" style="width:350px;" tabindex="4"
-                                        data-ng-model="clientForm.selectedLanguage" data-ng-options="s.value for s in languageTypes">
+                                        name="selectedLanguage" data-ng-model="client.selectedLanguage" data-ng-options="s.value for s in languageTypes">
                                 </select>
                             </div>
                         </div>
@@ -176,26 +213,11 @@
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Gender</label>
-                            <!-- <select data-ng-options="o.name for o in options" data-ng-model="selectedOption"></select> -->
-                            <!-- <select data-ng-options="o.value for o in genderTypes" data-ng-model="selectedOption2"></select> -->
-                            <!-- <select  data-ng-options="o.value for o in genderTypes3" data-ng-model="selectedOption3"></select> -->
-                            <!-- <select  style="width:350px;height:36px" tabindex="6" data-ng-options="o for o in genderTypes4" data-ng-model="selectedOption4"></select> -->
-
                             <div class="input-group">
                                 <select chosen id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
-                                        data-ng-model="clientForm.selectedGender" data-ng-options="s.value for s in genderTypes">
+                                        name="selectedGender" data-ng-model="client.selectedGender" data-ng-options="s.value for s in genderTypes">
                                 </select>
 
-
-
-                                <!-- <select chosen class="chosen-select"  style="width:350px;" tabindex="7"
-                                        data-ng-model="selectedOption4" data-ng-options="s for s in genderTypes4">
-                                    <option value=""></option>
-                                </select> -->
-
-                                <!--<select chosen id="genderTypes" class="chosen-select" style="width:350px;" tabindex="6"
-                                        ng-model="clientForm.genderType" ng-options="s.value for s in main.genderTypes">
-                                </select>  -->
                             </div>
                         </div>
 
@@ -205,7 +227,7 @@
 
                             <div class="input-group">
                                 <select chosen id="morbidConditionTypes" class="chosen-select" style="width:350px;" tabindex="7"
-                                        data-ng-model="clientForm.selectedMorbidCondition" data-ng-options="s.value for s in morbidConditionTypes">
+                                        name="selectedMorbidCondition" data-ng-model="client.selectedMorbidCondition" data-ng-options="s.value for s in morbidConditionTypes">
                                 </select>
                             </div>
                         </div>
@@ -215,7 +237,7 @@
 
                             <div class="input-group">
                                 <select chosen id="coMorbidConditionTypes" class="chosen-select" style="width:350px;" tabindex="8" multiple
-                                        ng-model="clientForm.selectedCoMorbidCondition" ng-options="s.value for s in coMorbidConditionTypes">
+                                        name="selectedcoMorbidConditions" data-ng-model="client.selectedcoMorbidConditions" ng-options="s.value for s in morbidConditionTypes">
                                 </select>
                             </div>
                         </div>
@@ -227,7 +249,7 @@
 
                             <div class="input-group">
                                 <select chosen id="timezoneTypes" class="chosen-select" style="width:350px;" tabindex="9"
-                                        ng-model="clientForm.selectedTimezone" data-ng-options="s.value for s in timezoneTypes">
+                                        name="selectedTimezone" data-ng-model="client.selectedTimezone" data-ng-options="s.value for s in timezoneTypes">
                                 </select>
                             </div>
                         </div>
@@ -236,23 +258,51 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">IVR PIN (four digits min)</label>
                             <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="ivrPin"
-                                                         data-ng-model="clientForm.ivrPin" class="form-control"></div>
+                                                         data-ng-model="client.ivrPin" required ng-model-options="{ updateOn: 'blur' }" class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.ivrPin.$error.required">Required!</span>
+                                    <span class="error" ng-show="clientForm.ivrPin.$error.minlength">Too short!</span>
+                                    <span class="error" ng-show="clientForm.ivrPin.$error.maxlength">Too long!</span>
+                                </div>
+
+                            </div>
 
                             <label class="col-sm-2 control-label">NoReadingThreshold (Hours)</label>
                             <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="noReadingThreshold"
-                                                         data-ng-model="clientForm.noReadingThreshold"  class="form-control"></div>
+                                                         data-ng-model="client.noReadingThreshold" required ng-model-options="{ updateOn: 'blur' }" class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.noReadingThreshold.$error.required">Required!</span>
+                                    <span class="error" ng-show="clientForm.noReadingThreshold.$error.minlength">Too short!</span>
+                                    <span class="error" ng-show="clientForm.noReadingThreshold.$error.maxlength">Too long!</span>
+                                </div>
+                            </div>
 
                             <label class="col-sm-2 control-label">Timer Timeout (Hours)</label>
                             <div class="col-md-2"><input type="text" placeholder=".col-md-4" name="timerTimeout"
-                                                         data-ng-model="clientForm.timerTimeout" class="form-control"></div>
+                                                         data-ng-model="client.timerTimeout" required ng-model-options="{ updateOn: 'blur' }" class="form-control">
+
+                                <div role="alert">
+                                    <span class="error" ng-show="clientForm.timerTimeout.$error.required">Required!</span>
+                                    <span class="error" ng-show="clientForm.timerTimeout.$error.minlength">Too short!</span>
+                                    <span class="error" ng-show="clientForm.timerTimeout.$error.maxlength">Too long!</span>
+                                </div>
+                            </div>
                         </div>
 
 
                         <div class="hr-line-dashed"></div>
                         <label class="col-sm-2 control-label">Phone Number</label>
 
-                        <div class="col-md-2"><input type="text" name="phonenumber"
-                                                     ng-model="clientForm.phonenumber"  class="form-control"></div>
+                        <div class="col-md-2">
+
+
+                            <input type="text" name="phonenumber" ng-minlength=2 ng-maxlength=20 required ng-model-options="{ updateOn: 'blur' }"
+                                   data-ng-model="client.phonenumber" class="form-control">
+
+
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Phone Types</label>
@@ -260,7 +310,7 @@
 
                                 <select chosen id="phoneTypes" class="chosen-select" style="width:350px;"
                                         tabindex="9"
-                                        data-ng-model="clientForm.selectedPhoneNumberType"
+                                        data-ng-model="client.selectedPhoneNumberType"
                                         data-ng-options="s.value for s in phonenumberTypes">
                                 </select>
                             <button data-ng-click="addPhoneNumberAccounts()">Add Phone Numbers</button>
@@ -281,40 +331,27 @@
                         <label class="col-sm-2 control-label">E-mail Address</label>
 
                         <div class="col-md-2"><input type="email" name="emailaddress"
-                                                     ng-model="clientForm.emailaddress" class="form-control"></div>
+                                                     ng-model="client.emailaddress" class="form-control">
+
+                            <div role="alert">
+                                <span class="error" ng-show="clientForm.emailaddress.$error.required">Required!</span>
+                                <span class="error" ng-show="clientForm.emailaddress.$error.minlength">Too short!</span>
+                                <span class="error" ng-show="clientForm.emailaddress.$error.maxlength">Too long!</span>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">E-mail Address Types</label>
 
                             <select chosen id="emailaddressTypes" class="chosen-select" style="width:350px;"
                                     tabindex="9"
-                                    data-ng-model="clientForm.selectedEmailAddressType"
+                                    data-ng-model="client.selectedEmailAddressType"
                                     data-ng-options="s.value for s in emailaddressTypes">
                             </select>
 
                             <button data-ng-click="addEmailAccounts()">Add Email Accounts</button>
                         </div>
 
-                        <!--<br />
-                        Name :
-                        <br />
-                        <input type="text" data-ng-model="filter.name" />
-
-                        <ul>
-                            <li data-ng-repeat="cust in customers | filter:filter.name | orderBy:'city'"> {{cust.name | uppercase}} - {{cust.city}}</li>
-                        </ul>
-
-                        <br />
-                        Customer Name :
-                        <br />
-                        <input type="text" data-ng-model="clientForm.name" />
-                        <br />
-                        Customer City :
-                        <br />
-                        <input type="text" data-ng-model="clientForm.city" />
-                        <br />
-                        <button data-ng-click="addCustomer()" >Add Customer</button>
-                        <br /> -->
 
 
                         <div class="form-group">
@@ -331,235 +368,12 @@
                         </br>
                         <div class="form-group">
                             <div class="col-sm-2 col-sm-offset-5">
-                                <button class="btn btn-white" type="submit">Cancel</button>
-                                <button class="btn btn-primary" ng-click='SaveNewClient();' type="submit">Save changes
-                                </button>
+                                <button type="button" ng-click="reset(form)" class="btn btn-white" value="Reset">Reset</button>
+                                <button type="submit" ng-click="saveNewClient(client)" class="btn btn-primary" value="Save Changes" >Save Changes</button>
                             </div>
                         </div>
 
-                        <!--
 
-                        <div class="hr-line-dashed"></div>
-
-                        <div class="form-group"><label class="col-sm-2 control-label">Normal</label>
-
-                            <div class="col-sm-10"><input type="text" class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Help text</label>
-
-                            <div class="col-sm-10"><input type="text" class="form-control"> <span class="help-block m-b-none">A block of help text that breaks onto a new line and may extend beyond one line.</span>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Password</label>
-
-                            <div class="col-sm-10"><input type="password" class="form-control" name="password"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Placeholder</label>
-
-                            <div class="col-sm-10"><input type="text" placeholder="placeholder" class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-lg-2 control-label">Disabled</label>
-
-                            <div class="col-lg-10"><input type="text" disabled="" placeholder="Disabled input here..." class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-lg-2 control-label">Static control</label>
-
-                            <div class="col-lg-10"><p class="form-control-static">email@example.com</p></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Checkboxes and radios <br/>
-                            <small class="text-navy">Normal Bootstrap elements</small>
-                        </label>
-
-                            <div class="col-sm-10">
-                                <div class="checkbox"><label> <input type="checkbox" value=""> Option one is this and that&mdash;be sure to include why it's great </label></div>
-                                <div class="radio"><label> <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios"> Option one is this and that&mdash;be sure to
-                                    include why it's great </label></div>
-                                <div class="radio"><label> <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> Option two can be something else and selecting it will
-                                    deselect option one </label></div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Inline checkboxes</label>
-
-                            <div class="col-sm-10"><label class="checkbox-inline"> <input type="checkbox" value="option1" id="inlineCheckbox1"> a </label> <label class="checkbox-inline">
-                                <input type="checkbox" value="option2" id="inlineCheckbox2"> b </label> <label class="checkbox-inline">
-                                <input type="checkbox" value="option3" id="inlineCheckbox3"> c </label></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Checkboxes &amp; radios <br/>
-                            <small class="text-navy">Custom elements</small>
-                        </label>
-
-                            <div class="col-sm-10">
-                                <div class="checkbox"><label> <input icheck type="checkbox" ng-model="main.check2"> Option one </label></div>
-                                <div class="checkbox"><label> <input icheck type="checkbox" ng-model="main.checkThree"> Option two checked </label></div>
-                                <div class="checkbox"><label> <input icheck type="checkbox" ng-model="main.checkTwo" disabled> Option three checked and disabled </label></div>
-                                <div class="checkbox"><label> <input icheck type="checkbox" ng-model="main.check4" disabled> Option four disabled </label></div>
-                                <div class="radio"><label> <input icheck type="radio" name="radioTest" ng-model="main.checkFour"> Option one </label></div>
-                                <div class="radio"><label> <input icheck type="radio" name="radioTest" ng-model="main.check8"> Option two checked </label></div>
-                                <div class="radio"><label> <input icheck type="radio" name="radioTestNext" ng-model="main.check8" disabled> Option four disabled </label></div>
-                                <div class="radio"><label> <input icheck type="radio" name="radioTestNext" ng-model="main.check9" disabled> Option three checked and disabled</label></div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Inline checkboxes</label>
-
-                            <div class="col-sm-10">
-                                <label class="checkbox-inline"> <input icheck type="checkbox" ng-model="main.unCheck"> a </label>
-                                <label class="checkbox-inline"> <input icheck type="checkbox" ng-model="main.unCheck"> b </label>
-                                <label class="checkbox-inline"> <input icheck type="checkbox" ng-model="main.unCheck"> c </label></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Select</label>
-
-                            <div class="col-sm-10"><select class="form-control m-b" name="account">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                            </select>
-
-                                <div class="col-lg-4 m-l-n"><select class="form-control" multiple="">
-                                    <option>option 1</option>
-                                    <option>option 2</option>
-                                    <option>option 3</option>
-                                    <option>option 4</option>
-                                </select></div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group has-success"><label class="col-sm-2 control-label">Input with success</label>
-
-                            <div class="col-sm-10"><input type="text" class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group has-warning"><label class="col-sm-2 control-label">Input with warning</label>
-
-                            <div class="col-sm-10"><input type="text" class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group has-error"><label class="col-sm-2 control-label">Input with error</label>
-
-                            <div class="col-sm-10"><input type="text" class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Control sizing</label>
-
-                            <div class="col-sm-10"><input type="text" placeholder=".input-lg" class="form-control input-lg m-b">
-                                <input type="text" placeholder="Default input" class="form-control m-b"> <input type="text" placeholder=".input-sm" class="form-control input-sm">
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Column sizing</label>
-
-                            <div class="col-sm-10">
-                                <div class="row">
-                                    <div class="col-md-2"><input type="text" placeholder=".col-md-2" class="form-control"></div>
-                                    <div class="col-md-3"><input type="text" placeholder=".col-md-3" class="form-control"></div>
-                                    <div class="col-md-4"><input type="text" placeholder=".col-md-4" class="form-control"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Input groups</label>
-
-                            <div class="col-sm-10">
-                                <div class="input-group m-b"><span class="input-group-addon">@</span> <input type="text" placeholder="Username" class="form-control"></div>
-                                <div class="input-group m-b"><input type="text" class="form-control"> <span class="input-group-addon">.00</span></div>
-                                <div class="input-group m-b"><span class="input-group-addon">$</span> <input type="text" class="form-control"> <span class="input-group-addon">.00</span></div>
-                                <div class="input-group m-b"><span class="input-group-addon"> <input type="checkbox"> </span> <input type="text" class="form-control"></div>
-                                <div class="input-group"><span class="input-group-addon"> <input type="radio"> </span> <input type="text" class="form-control"></div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Button addons</label>
-
-                            <div class="col-sm-10">
-                                <div class="input-group m-b"><span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary">Go!</button> </span> <input type="text" class="form-control">
-                                </div>
-                                <div class="input-group"><input type="text" class="form-control"> <span class="input-group-btn"> <button type="button" class="btn btn-primary">Go!
-                                </button> </span></div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">With dropdowns</label>
-
-                            <div class="col-sm-10">
-                                <div class="input-group m-b">
-                                    <div class="input-group-btn" dropdown>
-                                        <button class="btn btn-white dropdown-toggle" dropdown-toggle type="button">Action <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="">Action</a></li>
-                                            <li><a href="">Another action</a></li>
-                                            <li><a href="">Something else here</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                    <input type="text" class="form-control"></div>
-                                <div class="input-group"><input type="text" class="form-control">
-
-                                    <div class="input-group-btn" dropdown>
-                                        <button class="btn btn-white dropdown-toggle" dropdown-toggle type="button">Action <span class="caret"></span></button>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="">Action</a></li>
-                                            <li><a href="">Another action</a></li>
-                                            <li><a href="">Something else here</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Segmented</label>
-
-                            <div class="col-sm-10">
-                                <div class="input-group m-b">
-                                    <div class="input-group-btn" dropdown>
-                                        <button tabindex="-1" class="btn btn-white" type="button">Action</button>
-                                        <button class="btn btn-white dropdown-toggle" dropdown-toggle type="button"><span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="">Action</a></li>
-                                            <li><a href="">Another action</a></li>
-                                            <li><a href="">Something else here</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                    <input type="text" class="form-control"></div>
-                                <div class="input-group"><input type="text" class="form-control">
-
-
-                                    <div class="input-group-btn" dropdown>
-                                        <button tabindex="-1" class="btn btn-white" type="button">Action</button>
-                                        <button class="btn btn-white dropdown-toggle" dropdown-toggle type="button"><span class="caret"></span></button>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="">Action</a></li>
-                                            <li><a href="">Another action</a></li>
-                                            <li><a href="">Something else here</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-white" type="submit">Cancel</button>
-                                <button class="btn btn-primary" type="submit">Save changes</button>
-                            </div>
-                        </div> -->
                     </form>
                 </div>
             </div>

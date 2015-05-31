@@ -172,8 +172,20 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">SSN</label>
 
-                            <div class="col-md-2"><input type="text" ng-model="client.ssn" name="ssn" ng-minlength=9 ng-maxlength=9 required ng-model-options="{ updateOn: 'blur' }"
-                                                         placeholder="123-45-6789" class="form-control">
+                            <div class="col-md-2">
+                                <!-- <input type="text" ng-model="client.ssn" name="ssn" ng-minlength=9 ng-maxlength=9 required ng-model-options="{ updateOn: 'blur' }"
+                                                         placeholder="123-45-6789" class="form-control"> -->
+
+                                <input type="text" ng-model="client.ssn"  name="ssn" ng-minlength=9 ng-maxlength=9 required ng-model-options="{ updateOn: 'blur' }"
+                                        class="form-control" >
+
+
+
+
+                                 formatted ssn is:   <span mw-ssn="client.ssn"></span>
+
+
+
 
                                 <div role="alert">
                                     <span class="error" ng-show="clientForm.ssn.$error.required">Required!</span>

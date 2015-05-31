@@ -3,6 +3,66 @@
  * Copyright 2015 Webapplayers.com
  *
  */
+function testCtrl($scope, $log, $interval, uiGridConstants, $resource, $http, clientsFactory) {
+
+    $log.debug(" ------------------------------------- > test logic goes here. <-------------------------")
+
+}
+
+
+function chartJsCtrl($scope, $log, $interval, uiGridConstants, $resource, $http, clientsFactory) {
+
+    $log.debug(" ------------------------------------- > chart logic goes here. <-------------------------")
+
+    this.lineData = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "Example dataset",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 80, 81, 56, 55, 40]
+            },
+            {
+                label: "Example dataset",
+                fillColor: "rgba(26,179,148,0.5)",
+                strokeColor: "rgba(26,179,148,0.7)",
+                pointColor: "rgba(26,179,148,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(26,179,148,1)",
+                data: [28, 48, 40, 19, 86, 27, 90]
+            }
+        ]
+    };
+
+
+    /**
+     * Options for Line chart
+     */
+    this.lineOptions = {
+        scaleShowGridLines : true,
+        scaleGridLineColor : "rgba(0,0,0,.05)",
+        scaleGridLineWidth : 1,
+        bezierCurve : true,
+        bezierCurveTension : 0.4,
+        pointDot : true,
+        pointDotRadius : 4,
+        pointDotStrokeWidth : 1,
+        pointHitDetectionRadius : 20,
+        datasetStroke : true,
+        datasetStrokeWidth : 2,
+        datasetFill : true
+    };
+
+
+};
+
+
 
 /**
  * MainCtrl - controller
@@ -883,6 +943,20 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http, clientsF
 
     $log.log("******************** 1");
 
+    clientsFactory.getClients()
+        .then(function (data) {
+            //this will execute when the
+            //AJAX call completes.
+            $scope.clientGridOptions.data = data;
+            $log.debug("********************");
+            $log.debug(data);
+        },
+        function (errdata) {
+            $log.error('failure loading clients.', errdata);
+        }
+    );
+
+    /*
     clientsFactory.getClients().
         success(function(data, status, headers, config){
             $scope.clientGridOptions.data = data;
@@ -895,7 +969,7 @@ function clientsUiGrid($scope, $log, $interval, uiGridConstants, $http, clientsF
             $scope.testname = "ERROR";
             $log.error("getClients failed" + status);
         });
-
+*/
 
     $log.log("******************** 3");
 
@@ -1156,5 +1230,7 @@ function gridSubGRid($scope) {
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl, ['clientsFactory'])
+    .controller('chartJsCtrl', chartJsCtrl, ['clientsFactory'])
+    .controller('testCtrl', testCtrl, ['clientsFactory'])
 
 

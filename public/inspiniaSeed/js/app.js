@@ -75,7 +75,7 @@ app.factory('clientsFactory', ['$http', '$log', function($http, $log, $scope){
 }]); */
 
 
-app.factory('clientsFactory', ['$http', function($http){
+app.factory('clientsFactory1', ['$http', function($http){
     return {
             getClients: function () {
                 return  $http.get('http://localhost:4000/clients')
@@ -85,5 +85,25 @@ app.factory('clientsFactory', ['$http', function($http){
 
 
 
+app.factory('clientsFactory', function ($http, $q) {
+    return {
+        getClients: function() {
+            // the $http API is based on the deferred/promise APIs exposed by the $q service
+            // so it returns a promise for us by default
+            return $http.get('http://localhost:4000/clients')
+                .then(function(response) {
+                    if (typeof response.data === 'object') {
+                        return response.data;
+                    } else {
+                        // invalid response
+                        return $q.reject(response.data);
+                    }
 
+                }, function(response) {
+                    // something went wrong
+                    return $q.reject(response.data);
+                });
+        }
+    };
+});
 

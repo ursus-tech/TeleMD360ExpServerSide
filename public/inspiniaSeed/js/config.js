@@ -37,6 +37,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             templateUrl: "views/patient.html",
             data: { pageTitle: 'Patient Detail' }
         })
+        .state('index.login', {
+            url: "/login",
+            templateUrl: "./login_two_columns.html",
+            data: { pageTitle: 'TeleMD360 Login' }
+        })
         .state('index.clients', {
             url: "/clients",
             templateUrl: "views/clients.html",
@@ -54,6 +59,52 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
                             files: ['css/plugins/datapicker/angular-datapicker.css','js/plugins/datapicker/datePicker.js']
                         }
 
+                    ]);
+                }
+            }
+        })
+        .state('charts', {
+            abstract: true,
+            url: "/charts",
+            templateUrl: "views/common/content.html"
+        })
+        .state('charts.chartjs_chart', {
+            url: "/chartjs_chart",
+            templateUrl: "views/chartjs.html",
+            data: { pageTitle: 'Chart.js' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['js/plugins/chartJs/Chart.min.js']
+                        },
+                        {
+                            name: 'angles',
+                            files: ['js/plugins/chartJs/angles.js']
+                        }
+                    ]);
+                }
+            }
+        })
+        .state('mytest', {
+            abstract: true,
+            url: "/test",
+            templateUrl: "views/common/content.html"
+        })
+        .state('mytest.test', {
+            url: "/test",
+            templateUrl: "views/test.html",
+            data: { pageTitle: 'test Ctrl' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['js/plugins/chartJs/Chart.min.js']
+                        },
+                        {
+                            name: 'angles',
+                            files: ['js/plugins/chartJs/angles.js']
+                        }
                     ]);
                 }
             }

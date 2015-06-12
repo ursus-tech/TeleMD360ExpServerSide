@@ -129,9 +129,9 @@ function mwSsn() {
             updateTime();
         });
 
-        element.on('$destroy', function() {
-            $interval.cancel(timeoutId);
-        });
+        //element.on('$destroy', function() {
+        //    $interval.cancel(timeoutId);
+        //});
 
         // start the UI update process; save the timeoutId for canceling
         /*timeoutId = $interval(function() {
